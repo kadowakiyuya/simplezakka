@@ -57,14 +57,24 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // 商品一覧を取得して表示する関数
-    async function fetchProducts() {
+    async function fetchProducts(keyword = '') { // デフォルト値を設定
         try {
-            const response = await fetch(`${API_BASE}/products`);
+            // keyword があればクエリパラメータを追加
+            const url = keyword ? `${API_BASE}/products?keyword=${encodeURIComponent(keyword)}` : `${API_BASE}/products`;
+            const response = await fetch(url);
             if (!response.ok) {
                 throw new Error('商品の取得に失敗しました');
             }
             const products = await response.json();
             displayProducts(products);
+
+            // 検索結果がない場合の表示を追加するとより親切です
+            if (products.length === 0 && keyword) {
+                document.getElementById('products-container').innerHTML = `<p class="text-center w-100">「${keyword}」に一致する商品は見つかりませんでした。</p>`;
+            } else if (products.length === 0) {
+                 document.getElementById('products-container').innerHTML = `<p class="text-center w-100">商品がありません。</p>`;
+            }
+
         } catch (error) {
             console.error('Error:', error);
             alert('商品の読み込みに失敗しました');
