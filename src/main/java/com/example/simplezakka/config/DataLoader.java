@@ -34,7 +34,7 @@ public class DataLoader implements CommandLineRunner {
             createProduct(
                 "シンプルデスクオーガナイザー", 
                 "机の上をすっきり整理できる木製オーガナイザー。ペン、メモ、スマートフォンなどを収納できます。", 
-                null,
+                "木材",
                 3500, 
                 20, 
                 "/images/desk-organizer.png", 
@@ -45,7 +45,7 @@ public class DataLoader implements CommandLineRunner {
             createProduct(
                 "アロマディフューザー（ウッド）", 
                 "天然木を使用したシンプルなデザインのアロマディフューザー。LEDライト付き。", 
-                null, 
+                "木材、プラスチック", 
                 4200, 
                 15, 
                 "/images/aroma-diffuser.png", 
@@ -56,7 +56,7 @@ public class DataLoader implements CommandLineRunner {
             createProduct(
                 "コットンブランケット", 
                 "オーガニックコットン100%のやわらかブランケット。シンプルなデザインで様々なインテリアに合います。", 
-                null, 
+                "コットン", 
                 5800, 
                 10, 
                 "/images/cotton-blanket.png", 
@@ -67,7 +67,7 @@ public class DataLoader implements CommandLineRunner {
             createProduct(
                 "ステンレスタンブラー", 
                 "保温・保冷機能に優れたシンプルなデザインのステンレスタンブラー。容量350ml。",
-                null, 
+                "ステンレス", 
                 2800, 
                 30, 
                 "/images/tumbler.png", 
@@ -78,7 +78,7 @@ public class DataLoader implements CommandLineRunner {
             createProduct(
                 "ミニマルウォールクロック", 
                 "余計な装飾のないシンプルな壁掛け時計。静音設計。",
-                null, 
+                "ガラス、プラスチック", 
                 3200, 
                 25, 
                 "/images/wall-clock.png", 
@@ -89,7 +89,7 @@ public class DataLoader implements CommandLineRunner {
             createProduct(
                 "リネンクッションカバー", 
                 "天然リネン100%のクッションカバー。取り外して洗濯可能。45×45cm対応。",
-                null, 
+                "リネン", 
                 2500, 
                 40, 
                 "/images/cushion-cover.png", 
@@ -100,7 +100,7 @@ public class DataLoader implements CommandLineRunner {
             createProduct(
                 "陶器フラワーベース", 
                 "手作りの風合いが魅力の陶器製フラワーベース。シンプルな形状で花を引き立てます。",
-                null, 
+                "粘土", 
                 4000, 
                 15, 
                 "/images/flower-vase.png", 
@@ -111,7 +111,7 @@ public class DataLoader implements CommandLineRunner {
             createProduct(
                 "木製コースター（4枚セット）", 
                 "天然木を使用したシンプルなデザインのコースター。4枚セット。",
-                null, 
+                "木材", 
                 1800, 
                 50, 
                 "/images/wooden-coaster.png", 
@@ -122,7 +122,7 @@ public class DataLoader implements CommandLineRunner {
             createProduct(
                 "キャンバストートバッグ", 
                 "丈夫なキャンバス地で作られたシンプルなトートバッグ。内ポケット付き。",
-                null, 
+                "綿", 
                 3600, 
                 35, 
                 "/images/tote-bag.png", 
@@ -133,7 +133,7 @@ public class DataLoader implements CommandLineRunner {
             createProduct(
                 "ガラス保存容器セット", 
                 "電子レンジ・食洗機対応のガラス製保存容器。3サイズセット。",
-                null, 
+                "木材、ガラス", 
                 4500, 
                 20, 
                 "/images/glass-container.png", 
