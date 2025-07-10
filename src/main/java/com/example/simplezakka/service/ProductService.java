@@ -47,6 +47,7 @@ public class ProductService {
                 product.getName(),
                 product.getPrice(),
                 product.getDescription(),
+                product.getMaterial(),
                 product.getStock(),
                 product.getImageUrl()
         );

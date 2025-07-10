@@ -21,6 +21,9 @@ public class Product {
     
     @Column(length = 1000)
     private String description;
+
+    @Column(length = 1000)
+    private String material;
     
     @Column(nullable = false)
     private Integer price;
