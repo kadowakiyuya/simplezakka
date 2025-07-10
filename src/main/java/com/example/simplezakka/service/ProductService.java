@@ -9,29 +9,56 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList; // ArrayListを使う可能性があるのでインポート
 import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
 
     private final ProductRepository productRepository;
-    
+
     @Autowired
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
-    
+
     public List<ProductListItem> findAllProducts() {
         return productRepository.findAll().stream()
                 .map(this::convertToListItem)
                 .collect(Collectors.toList());
     }
-    
+
     public ProductDetail findProductById(Integer productId) {
         Optional<Product> productOpt = productRepository.findById(productId);
         return productOpt.map(this::convertToDetail).orElse(null);
     }
+
+   
+    /**
+     * 商品名で部分一致検索を行うサービスメソッド。
+     * キーワードがnullまたは空文字の場合は、すべての商品を返します。
+     *
+     * @param keyword 検索キーワード
+     * @return 検索条件に合致する商品のリスト（ProductListItem形式）
+     */
+    public List<ProductListItem> searchProductsByName(String keyword) {
+        // キーワードがnullまたは空文字の場合のハンドリング
+        if (keyword == null || keyword.trim().isEmpty()) {
+            // 例：キーワードがない場合は全件表示
+            return findAllProducts();
+            // あるいは、キーワードがない場合は何も表示しないなら、以下のようにする
+            // return new ArrayList<>();
+        }
+        // ProductRepositoryのfindByNameContainingIgnoreCaseメソッドを呼び出し、
+        // その結果をProductListItemのリストに変換して返す
+        return productRepository.findByNameContainingIgnoreCase(keyword.trim()).stream()
+                .map(this::convertToListItem)
+                .collect(Collectors.toList());
+    }
+   
     
+
+
     private ProductListItem convertToListItem(Product product) {
         return new ProductListItem(
                 product.getProductId(),
@@ -40,7 +67,7 @@ public class ProductService {
                 product.getImageUrl()
         );
     }
-    
+
     private ProductDetail convertToDetail(Product product) {
         return new ProductDetail(
                 product.getProductId(),

@@ -7,6 +7,31 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // APIのベースURL
     const API_BASE = '/api';
+
+    // 検索フォームの要素を取得
+    // HTML側で id="searchInput" と id="searchButton" が必要です
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+
+    // 検索ボタンクリック時のイベントリスナー
+    if (searchButton) { // HTMLにボタンが存在するか確認
+        searchButton.addEventListener('click', function() {
+            const keyword = searchInput.value.trim(); // 入力値を取得し、前後の空白を除去
+            fetchProducts(keyword); // 検索関数を呼び出す
+        });
+    }
+
+    // 検索入力欄でEnterキーを押した時のイベントリスナー
+    if (searchInput) { // HTMLに入力欄が存在するか確認
+        searchInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                const keyword = searchInput.value.trim();
+                fetchProducts(keyword);
+            }
+        });
+    }
+
+
     
     // 商品一覧の取得と表示
     fetchProducts();
