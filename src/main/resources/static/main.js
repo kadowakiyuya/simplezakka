@@ -57,10 +57,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // 商品一覧を取得して表示する関数
+    // 商品一覧を取得して表示する関数
     async function fetchProducts(keyword = '') { // デフォルト値を設定
         try {
-            // keyword があればクエリパラメータを追加
-            const url = keyword ? `${API_BASE}/products?keyword=${encodeURIComponent(keyword)}` : `${API_BASE}/products`;
+            // ★★★ 修正箇所: キーワードの有無でAPIエンドポイントを切り替える ★★★
+            let url;
+            if (keyword.trim() !== '') { // キーワードが空ではない場合
+                // キーワードがある場合は /api/products/search エンドポイントを使用
+                url = `${API_BASE}/products/search?keyword=${encodeURIComponent(keyword)}`;
+            } else {
+                // キーワードがない場合は /api/products エンドポイントを使用（全商品取得）
+                url = `${API_BASE}/products`;
+            }
+
             const response = await fetch(url);
             if (!response.ok) {
                 throw new Error('商品の取得に失敗しました');
@@ -69,9 +78,9 @@ document.addEventListener('DOMContentLoaded', function() {
             displayProducts(products);
 
             // 検索結果がない場合の表示を追加するとより親切です
-            if (products.length === 0 && keyword) {
+            if (products.length === 0 && keyword.trim() !== '') {
                 document.getElementById('products-container').innerHTML = `<p class="text-center w-100">「${keyword}」に一致する商品は見つかりませんでした。</p>`;
-            } else if (products.length === 0) {
+            } else if (products.length === 0 && keyword.trim() === '') {
                  document.getElementById('products-container').innerHTML = `<p class="text-center w-100">商品がありません。</p>`;
             }
 
