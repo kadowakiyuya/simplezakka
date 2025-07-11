@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+
 
 import java.util.List;
 
@@ -19,10 +21,15 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @Autowired
+
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
+    @GetMapping("/list")
+    public String listProducts(@RequestParam(name = "sort", required = false, defaultValue = "new") String sort, Model model) {
+    List<ProductListItem> products = productService.getSortedProducts(sort);
+    return "product_list"; // index.html
+}
 
     // --- 商品名検索エンドポイント ---
     // このエンドポイントは、パス変数を含むエンドポイントよりも物理的に上に配置することが推奨されますが、
@@ -30,6 +37,7 @@ public class ProductController {
     @GetMapping("/search")
     public ResponseEntity<List<ProductListItem>> searchProducts(@RequestParam(required = false) String keyword) {
         List<ProductListItem> products = productService.searchProductsByName(keyword);
+        model.addAttribute("products", products);
         return ResponseEntity.ok(products);
     }
 
