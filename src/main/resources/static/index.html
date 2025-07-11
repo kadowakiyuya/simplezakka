@@ -8,11 +8,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
         <header class="d-flex flex-wrap justify-content-between py-3 mb-4 border-bottom">
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                <span class="fs-4">シンプル雑貨オンライン</span>
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 text-dark text-decoration-none mx-auto">
+                <span class="fs-4" style="text-align:center">シンプル雑貨オンライン</span>
             </a>
             <div class="text-end">
                 <li class="nav-item">
@@ -20,7 +21,15 @@
                             <input type="text" id="searchInput" class="form-control" placeholder="商品名を検索..." aria-label="商品名を検索">
                             <button class="btn btn-outline-light" type="button" id="searchButton">検索</button>
                         </div>
-                    </li>
+                        <form method="get" action="/products">
+                          <select name="sort" onchange="this.form.submit()">
+                            <option value="new">新着順</option>
+                            <option value="price_asc">価格が安い順</option>
+                            <option value="price_desc">価格が高い順</option>
+                            <option value="name">商品名順</option>
+                          </select>
+                        </form>
+                 </li>
                 <button id="cart-btn" class="btn btn-outline-dark position-relative">
                     <i class="bi bi-cart"></i> カート
                     <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge">
@@ -134,3 +143,4 @@
     <script src="main.js"></script>
 </body>
 </html>
+
