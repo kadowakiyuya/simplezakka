@@ -28,10 +28,29 @@ public class ProductController {
     // このエンドポイントは、パス変数を含むエンドポイントよりも物理的に上に配置することが推奨されますが、
     // パス変数に正規表現を追加することで、より確実にルーティングを制御できます。
     @GetMapping("/search")
-    public ResponseEntity<List<ProductListItem>> searchProducts(@RequestParam(required = false) String keyword) {
-        List<ProductListItem> products = productService.searchProductsByName(keyword);
+    public ResponseEntity<List<ProductListItem>> searchProducts
+        (@RequestParam(required = false) String keyword, 
+        @RequestParam(required = false) String categoryName
+        ) {
+        List<ProductListItem> products;
+
+        if (keyword != null && !keyword.isEmpty()) {
+        // キーワードのみで検索
+            products = productService.searchProductsByName(keyword);
+        } 
+        else if (categoryName != null && !categoryName.isEmpty()) {
+        // カテゴリー名のみで検索
+            products = productService.searchProductsByCategory(categoryName);
+        }
+        else {
+            // キーワードもカテゴリー名も指定されていない場合は全商品を返す
+            products = productService.findAllProducts();
+        }
         return ResponseEntity.ok(products);
+
     }
+
+   
 
     // --- 全ての商品リスト取得エンドポイント ---
     @GetMapping
