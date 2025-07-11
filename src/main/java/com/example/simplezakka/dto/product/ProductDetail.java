@@ -12,6 +12,8 @@ public class ProductDetail {
     private String name;
     private Integer price;
     private String description;
+    private String material;
+    private String category;
     private Integer stock;
     private String imageUrl;
 }
