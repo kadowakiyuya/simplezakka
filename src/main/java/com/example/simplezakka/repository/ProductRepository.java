@@ -22,7 +22,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     // 商品名での部分一致検索メソッドここまで
 
     // カテゴリ名での完全一致検索メソッド
-    List<Product> findByCategoryName(String categoryName);
+    List<Product> findByCategory(String categoryName);
     // カテゴリ名での完全一致検索メソッドここまで
 
     @Modifying

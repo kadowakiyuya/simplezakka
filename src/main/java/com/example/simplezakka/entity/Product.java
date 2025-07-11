@@ -23,12 +23,9 @@ public class Product {
     private String description;
 
     @Column(length = 1000)
-<<<<<<< HEAD
-=======
     private String category;
 
     @Column(length = 1000)
->>>>>>> origin/develop
     private String material;
     
     @Column(nullable = false)

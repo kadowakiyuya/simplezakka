@@ -55,11 +55,11 @@ public class ProductService {
     }
 
     // カテゴリ検索メソッド
-    public List<ProductListItem> searchProductsByCategoryName(String keyword) {
+    public List<ProductListItem> searchProductsByCategory(String keyword) {
                 
         // ProductRepositoryのfindByNameContainingIgnoreCaseメソッドを呼び出し、
         // その結果をProductListItemのリストに変換して返す
-        return productRepository.findByNameContainingIgnoreCase(keyword.trim()).stream()
+        return productRepository.findByCategory(keyword.trim()).stream()
                 .map(this::convertToListItem)
                 .collect(Collectors.toList());
     }

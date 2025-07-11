@@ -13,10 +13,7 @@ public class ProductDetail {
     private Integer price;
     private String description;
     private String material;
-<<<<<<< HEAD
-=======
     private String category;
->>>>>>> origin/develop
     private Integer stock;
     private String imageUrl;
 }
