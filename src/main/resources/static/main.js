@@ -56,7 +56,10 @@ document.addEventListener('DOMContentLoaded', function() {
             card.className = 'col';
             card.innerHTML = `
                 <div class="card product-card">
-                    <img src="${product.imageUrl || 'https://via.placeholder.com/300x200'}" class="card-img-top" alt="${product.name}">
+                    <div class="image-container">
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/300x200'}" class="card-img-top" alt="${product.name}">
+                        <div class="badge-new">New</div>
+                    </div>
                     <div class="card-body">
                         <h5 class="card-title">${product.name}</h5>
                         <p class="card-text">¥${product.price.toLocaleString()}</p>
@@ -97,6 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="row">
                 <div class="col-md-6">
                     <img src="${product.imageUrl || 'https://via.placeholder.com/400x300'}" class="img-fluid" alt="${product.name}">
+                    <div class="badge-new">New</div>
                 </div>
                 <div class="col-md-6">
                     <p class="fs-4">¥${product.price.toLocaleString()}</p>
