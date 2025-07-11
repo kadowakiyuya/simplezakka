@@ -36,7 +36,7 @@ public class ProductService {
    
     /**
      * 商品名で部分一致検索を行うサービスメソッド。
-     * キーワードがnullまたは空文字の場合は、すべての商品を返します。
+     * キーワードがnullまたは空文字の場合は、すべての商品を返す。
      *
      * @param keyword 検索キーワード
      * @return 検索条件に合致する商品のリスト（ProductListItem形式）
