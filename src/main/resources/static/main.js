@@ -7,6 +7,56 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // APIのベースURL
     const API_BASE = '/api';
+
+    // 検索フォームの要素を取得
+    // HTML側で id="searchInput" と id="searchButton" が必要です
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+
+    // 検索ボタンクリック時のイベントリスナー
+    if (searchButton) { // HTMLにボタンが存在するか確認
+        searchButton.addEventListener('click', function() {
+            const keyword = searchInput.value.trim(); // 入力値を取得し、前後の空白を除去
+            fetchProducts(keyword); // 検索関数を呼び出す
+        });
+    }
+
+    // 検索入力欄でEnterキーを押した時のイベントリスナー
+    if (searchInput) { // HTMLに入力欄が存在するか確認
+        searchInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                const keyword = searchInput.value.trim();
+                fetchProducts(keyword);
+            }
+        });
+    }
+
+// カテゴリ選択とボタンの要素を取得
+const categorySelect = document.getElementById('categorySelect');
+
+// カテゴリ選択ボタンクリック時のイベント
+if (searchButton && categorySelect) {
+    searchButton.addEventListener('click', function () {
+        const slug = categorySelect.value;
+        if (slug) {
+            // カテゴリに対応するURLに遷移
+            window.location.href = `/category/${slug}/`;
+        } else {
+            alert("カテゴリを選択してください");
+        }
+    });
+}
+
+// カテゴリセレクトで Enter を押したとき（任意）
+categorySelect.addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+        const slug = categorySelect.value;
+        if (slug) {
+            window.location.href = `/category/${slug}/`;
+        }
+    }
+});
+
     
     // 商品一覧の取得と表示
     fetchProducts();
@@ -32,14 +82,33 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // 商品一覧を取得して表示する関数
-    async function fetchProducts() {
+    // 商品一覧を取得して表示する関数
+    async function fetchProducts(keyword = '') { // デフォルト値を設定
         try {
-            const response = await fetch(`${API_BASE}/products`);
+            // ★★★ 修正箇所: キーワードの有無でAPIエンドポイントを切り替える ★★★
+            let url;
+            if (keyword.trim() !== '') { // キーワードが空ではない場合
+                // キーワードがある場合は /api/products/search エンドポイントを使用
+                url = `${API_BASE}/products/search?keyword=${encodeURIComponent(keyword)}`;
+            } else {
+                // キーワードがない場合は /api/products エンドポイントを使用（全商品取得）
+                url = `${API_BASE}/products`;
+            }
+
+            const response = await fetch(url);
             if (!response.ok) {
                 throw new Error('商品の取得に失敗しました');
             }
             const products = await response.json();
             displayProducts(products);
+
+            // 検索結果がない場合の表示を追加するとより親切です
+            if (products.length === 0 && keyword.trim() !== '') {
+                document.getElementById('products-container').innerHTML = `<p class="text-center w-100">「${keyword}」に一致する商品は見つかりませんでした。</p>`;
+            } else if (products.length === 0 && keyword.trim() === '') {
+                 document.getElementById('products-container').innerHTML = `<p class="text-center w-100">商品がありません。</p>`;
+            }
+
         } catch (error) {
             console.error('Error:', error);
             alert('商品の読み込みに失敗しました');
@@ -102,6 +171,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p class="fs-4">¥${product.price.toLocaleString()}</p>
                     <p>${product.description}</p>
                     <p>素材: ${product.material}</p>
+<<<<<<< HEAD
+=======
+                    <p>カテゴリ: ${product.category}</p>
+>>>>>>> origin/develop
                     <p>在庫: ${product.stock} 個</p>
                     <div class="d-flex align-items-center mb-3">
                         <label for="quantity" class="me-2">数量:</label>
