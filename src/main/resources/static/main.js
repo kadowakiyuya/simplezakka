@@ -171,10 +171,7 @@ categorySelect.addEventListener('keypress', function (event) {
                     <p class="fs-4">¥${product.price.toLocaleString()}</p>
                     <p>${product.description}</p>
                     <p>素材: ${product.material}</p>
-<<<<<<< HEAD
-=======
                     <p>カテゴリ: ${product.category}</p>
->>>>>>> origin/develop
                     <p>在庫: ${product.stock} 個</p>
                     <div class="d-flex align-items-center mb-3">
                         <label for="quantity" class="me-2">数量:</label>
