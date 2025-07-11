@@ -46,8 +46,6 @@ public class ProductService {
         if (keyword == null || keyword.trim().isEmpty()) {
             // 例：キーワードがない場合は全件表示
             return findAllProducts();
-            // あるいは、キーワードがない場合は何も表示しないなら、以下のようにする
-            // return new ArrayList<>();
         }
         // ProductRepositoryのfindByNameContainingIgnoreCaseメソッドを呼び出し、
         // その結果をProductListItemのリストに変換して返す
@@ -56,14 +54,9 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public List<ProductListItem> searchProductsByName(String keyword) {
-        // キーワードがnullまたは空文字の場合のハンドリング
-        if (keyword == null || keyword.trim().isEmpty()) {
-            // 例：キーワードがない場合は全件表示
-            return findAllProducts();
-            // あるいは、キーワードがない場合は何も表示しないなら、以下のようにする
-            // return new ArrayList<>();
-        }
+    // カテゴリ検索メソッド
+    public List<ProductListItem> searchProductsByCategoryName(String keyword) {
+                
         // ProductRepositoryのfindByNameContainingIgnoreCaseメソッドを呼び出し、
         // その結果をProductListItemのリストに変換して返す
         return productRepository.findByNameContainingIgnoreCase(keyword.trim()).stream()
