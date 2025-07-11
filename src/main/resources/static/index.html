@@ -23,6 +23,20 @@
                             <button class="btn btn-outline-light" type="button" id="searchButton">検索</button>
                         </div>
                     </li>
+                    <li class="nav-item">
+    <form method="get" onsubmit="return redirectToCategory()" class="d-flex me-3">
+        <div class="input-group">
+            <select id="categorySelect" class="form-select">
+                <option value="">カテゴリを選択</option>
+                {% for cat in categories %}
+                    <option value="{{ cat.slug }}">{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-outline-light" type="submit">移動</button>
+        </div>
+    </form>
+</li>
+
                 <button id="cart-btn" class="btn btn-outline-dark position-relative">
                     <i class="bi bi-cart"></i> カート
                     <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge">

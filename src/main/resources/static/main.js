@@ -31,6 +31,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+// カテゴリ選択とボタンの要素を取得
+const categorySelect = document.getElementById('categorySelect');
+
+// カテゴリ選択ボタンクリック時のイベント
+if (searchButton && categorySelect) {
+    searchButton.addEventListener('click', function () {
+        const slug = categorySelect.value;
+        if (slug) {
+            // カテゴリに対応するURLに遷移
+            window.location.href = `/category/${slug}/`;
+        } else {
+            alert("カテゴリを選択してください");
+        }
+    });
+}
+
+// カテゴリセレクトで Enter を押したとき（任意）
+categorySelect.addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+        const slug = categorySelect.value;
+        if (slug) {
+            window.location.href = `/category/${slug}/`;
+        }
+    }
+});
 
     
     // 商品一覧の取得と表示
