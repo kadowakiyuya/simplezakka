@@ -24,18 +24,25 @@
                         </div>
                     </li>
                     <li class="nav-item">
+    <!-- セレクト形式のカテゴリ選択 -->
     <form method="get" onsubmit="return redirectToCategory()" class="d-flex me-3">
         <div class="input-group">
             <select id="categorySelect" class="form-select">
                 <option value="">カテゴリを選択</option>
                 {% for cat in categories %}
-                    <option value="{{ cat.slug }}">{{ cat.name }}</option>
+                    <option value="{{ cat.slug }}">文房具</option>
                 {% endfor %}
             </select>
             <button class="btn btn-outline-light" type="submit">移動</button>
         </div>
     </form>
+
+    <!-- ボタン形式のカテゴリ表示（追加部分） -->
+    <div class="btn-group mt-2 flex-wrap" role="group" aria-label="カテゴリボタン">
+        
+    </div>
 </li>
+
 
                 <button id="cart-btn" class="btn btn-outline-dark position-relative">
                     <i class="bi bi-cart"></i> カート
