@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="row">
                 <div class="col-md-6">
                     <img src="${product.imageUrl || 'https://via.placeholder.com/400x300'}" class="img-fluid" alt="${product.name}">
+                    <div class="badge-new">New</div>
                 </div>
                 <div class="col-md-6">
                     <p class="fs-4">¥${product.price.toLocaleString()}</p>
