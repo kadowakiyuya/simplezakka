@@ -150,8 +150,21 @@ public class DataLoader implements CommandLineRunner {
                 false
 
 
+            ),
+            createProduct(                                                                                                                                                                 
+                "クッション",
+                "洗えるクッション",
+                "綿", 
+                "インテリア", 
+                7800, 
+                20, 
+                "/images/スクリーンショット 2025-07-11 181052.png", 
+                true
+                
             )
+
         );
+        
         
         productRepository.saveAll(products);
     }
