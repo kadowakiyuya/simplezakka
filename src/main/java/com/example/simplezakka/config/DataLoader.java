@@ -213,7 +213,17 @@ public class DataLoader implements CommandLineRunner {
                 10, 
                 "/images/財布.webp", 
                 true
-                ) 
+                ) ,
+            createProduct(
+                "水筒(200ml)",
+                "携帯しやすいコンパクトサイズ。口当たりよく飲めるよう、飲み口の仕様を工夫しました。", 
+                "ステンレス",
+                "日用品", 
+                 1500, 
+                 20, 
+                "/images/水筒.jpg", 
+                true
+                )
 
 
 
