@@ -174,7 +174,6 @@ public class DataLoader implements CommandLineRunner {
                 
             ),
             createProduct(
-<<<<<<< HEAD
                 "椅子", 
                 "テーブルに肘をかけ足を浮かすことができる軽量チェアーで設計されておりアームチェアーのような肘がついているデザイナーズチェアー", 
                 "ブナ・アッシュ・メープル・チェリー・ナラ・ウォールナットなど", 
@@ -186,7 +185,6 @@ public class DataLoader implements CommandLineRunner {
             )
 
 
-=======
                 "ポケット付きミニトートバッグ", 
                 "デザインと機能性を兼ね備えたトートバッグ", 
                 "革", 
@@ -211,7 +209,6 @@ public class DataLoader implements CommandLineRunner {
 
 
 
->>>>>>> 64ba3ad76ae413398b75276de4a41fb3bf8fc7cb
         );
         
         
