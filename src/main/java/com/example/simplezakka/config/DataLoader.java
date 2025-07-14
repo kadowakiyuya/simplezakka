@@ -195,7 +195,7 @@ public class DataLoader implements CommandLineRunner {
                 
             ),
             createProduct(
-                "マグカップ", 
+                "マグカップ(ブラック)", 
                 "生涯を共にしたくなる「本物」を日本の職人の手づくりで実現したブランド", 
                 "プラスチック", 
                 "キッチン用品", 
@@ -205,7 +205,7 @@ public class DataLoader implements CommandLineRunner {
                 true
                 ),
             createProduct(
-                "財布", 
+                "本革財布", 
                 "キメの細かいシボ感で滑らかな手触りの上質なシュリンクレザーを使用して製作した２つ折り財布です。", 
                 "本革", 
                 "ファッション小物", 
@@ -215,7 +215,7 @@ public class DataLoader implements CommandLineRunner {
                 true
                 ) ,
             createProduct(
-                "水筒(200ml)",
+                "ステンレス水筒(200ml)",
                 "携帯しやすいコンパクトサイズ。口当たりよく飲めるよう、飲み口の仕様を工夫しました。", 
                 "ステンレス",
                 "日用品", 
