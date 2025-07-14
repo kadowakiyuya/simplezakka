@@ -22,7 +22,6 @@ public class OrderController {
     private final OrderService orderService;
     private final CartService cartService;
     
-    @Autowired
     public OrderController(OrderService orderService, CartService cartService) {
         this.orderService = orderService;
         this.cartService = cartService;
