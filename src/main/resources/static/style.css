@@ -20,17 +20,19 @@ body {
     position: relative;
 }
 .btn-gold {
-    background: linear-gradient(145deg, #fff8dc, #ffd700, #b8860b);
-    color: #333;
-    border: 1px solid #daa520;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.6);
+    background-color: #e9d8ae;  /* 画像の色に近い落ち着いた金 */
+    color: #000;                /* 黒文字で読みやすく */
+    border: 1px solid #c2a74e;  /* 渋めの金で縁取り */
     font-weight: bold;
-    transition: all 0.3s ease;
+    padding: 10px 20px;
+    border-radius: 6px;
+    transition: 0.3s ease;
 }
 
 .btn-gold:hover {
-    background: linear-gradient(145deg, #fffacd, #ffc107, #b8860b);
-    color: #000;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.7);
+    background-color: #f1e0b2;  /* 少し明るく */
+    border-color: #b8973c;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
+
 
