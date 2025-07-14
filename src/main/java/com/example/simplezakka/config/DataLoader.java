@@ -182,9 +182,8 @@ public class DataLoader implements CommandLineRunner {
                 10, 
                 "/images/椅子.jpg", 
                 true
-            )
-
-
+            ),
+            createProduct(
                 "ポケット付きミニトートバッグ", 
                 "デザインと機能性を兼ね備えたトートバッグ", 
                 "革", 
