@@ -129,7 +129,7 @@ categorySelect.addEventListener('keypress', function (event) {
                     <div class="card-body">
                         <h5 class="card-title">${product.name}</h5>
                         <p class="card-text">¥${product.price.toLocaleString()}</p>
-                        <button class="btn btn-outline-primary view-product" data-id="${product.productId}">詳細を見る</button>
+                        <button class="btn btn-gold view-product" data-id="${product.productId}">詳細を見る</button>
                     </div>
                 </div>
             `;
@@ -177,7 +177,7 @@ categorySelect.addEventListener('keypress', function (event) {
                         <label for="quantity" class="me-2">数量:</label>
                         <input type="number" id="quantity" class="form-control w-25" value="1" min="1" max="${product.stock}">
                     </div>
-                    <button class="btn btn-primary add-to-cart" data-id="${product.productId}">カートに入れる</button>
+                    <button class="btn btn-gold add-to-cart" data-id="${product.productId}">カートに入れる</button>
                 </div>
             </div>
         `;
