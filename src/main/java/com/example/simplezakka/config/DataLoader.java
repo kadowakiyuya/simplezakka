@@ -172,7 +172,18 @@ public class DataLoader implements CommandLineRunner {
                 "/images/スクリーンショット 2025-07-14 095635.png", 
                 true
                 
+            ),
+            createProduct(
+                "椅子", 
+                "テーブルに肘をかけ足を浮かすことができる軽量チェアーで設計されておりアームチェアーのような肘がついているデザイナーズチェアー", 
+                "ブナ・アッシュ・メープル・チェリー・ナラ・ウォールナットなど", 
+                "家具", 
+                12000, 
+                10, 
+                "/images/椅子.jpg", 
+                true
             )
+
 
         );
         
