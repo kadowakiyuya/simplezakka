@@ -184,17 +184,6 @@ public class DataLoader implements CommandLineRunner {
                 true
             ),
             createProduct(
-                "ポケット付きミニトートバッグ", 
-                "デザインと機能性を兼ね備えたトートバッグ", 
-                "革", 
-                "ファッション小物", 
-                3100, 
-                5, 
-                "/images/71tLgxw8HGL._AC_SX679_.jpg", 
-                true
-                
-            ),
-            createProduct(
                 "折り畳みローテーブル", 
                 "コンパクトな折り畳みテーブル", 
                 "メラミン樹脂化粧中密度繊維板", 
