@@ -177,7 +177,7 @@ categorySelect.addEventListener('keypress', function (event) {
                         <label for="quantity" class="me-2">数量:</label>
                         <input type="number" id="quantity" class="form-control w-25" value="1" min="1" max="${product.stock}">
                     </div>
-                    <button class="btn btn-primary add-to-cart" data-id="${product.productId}">カートに入れる</button>
+                    <button class="btn btn-gold add-to-cart" data-id="${product.productId}">カートに入れる</button>
                 </div>
             </div>
         `;
