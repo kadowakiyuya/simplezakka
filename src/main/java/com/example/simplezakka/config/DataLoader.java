@@ -203,7 +203,17 @@ public class DataLoader implements CommandLineRunner {
                 30, 
                 "/images/マグカップ.webp", 
                 true
-                )
+                ),
+            createProduct(
+                "財布", 
+                "キメの細かいシボ感で滑らかな手触りの上質なシュリンクレザーを使用して製作した２つ折り財布です。", 
+                "本革", 
+                "ファッション小物", 
+                5000, 
+                10, 
+                "/images/椅子.jpg", 
+                true
+                ) 
 
 
 
