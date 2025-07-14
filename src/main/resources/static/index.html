@@ -34,7 +34,7 @@
         <form method="get" onsubmit="return redirectToCategory()" class="mb-2">
             <div class="input-group">
                 <select id="categorySelect" class="form-select">
-                    <option value="">カテゴリを選択</option>
+                    <option value="" disabled selected hidden>カテゴリを選択</option>
                     {% for cat in categories %}
                         <option value="{{ cat.slug }}">文房具</option>
                     {% endfor %}
