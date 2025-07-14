@@ -179,7 +179,7 @@ public class DataLoader implements CommandLineRunner {
                 "ブナ・アッシュ・メープル・チェリー・ナラ・ウォールナットなど", 
                 "家具", 
                 10000, 
-                10, 
+                3, 
                 "/images/椅子.jpg", 
                 true
             ),
@@ -189,7 +189,7 @@ public class DataLoader implements CommandLineRunner {
                 "メラミン樹脂化粧中密度繊維板", 
                 "家具", 
                 3600, 
-                3, 
+                5, 
                 "/images/31SWGiR9K9L._AC_.jpg", 
                 true
                 
@@ -210,7 +210,7 @@ public class DataLoader implements CommandLineRunner {
                 "本革", 
                 "ファッション小物", 
                 5000, 
-                10, 
+                5, 
                 "/images/財布.webp", 
                 true
                 ) ,
