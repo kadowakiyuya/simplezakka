@@ -20,6 +20,13 @@ public class ProductController {
         this.productService = productService;
     }
 
+ // 検索（JSON）
+    @GetMapping("/sort")
+    public ResponseEntity<List<ProductListItem>> sortProducts(@RequestParam(required = false) String keyword) {
+        List<ProductListItem> products = productService.getSortedProducts(keyword);
+        return ResponseEntity.ok(products);
+    }
+
     // 全商品取得（JSON）
     @GetMapping
     public ResponseEntity<List<ProductListItem>> getAllProducts() {

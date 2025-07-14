@@ -21,14 +21,14 @@
                             <input type="text" id="searchInput" class="form-control" placeholder="商品名を検索..." aria-label="商品名を検索">
                             <button class="btn btn-outline-light" type="button" id="searchButton">検索</button>
                         </div>
-                        <form method="get" action="/api/products">
-                          <select name="sort" onchange="this.form.submit()">
+                     <form>
+                        <select name="sort" id="sortExe">
                             <option value="new">新着順</option>
                             <option value="price_asc">価格が安い順</option>
                             <option value="price_desc">価格が高い順</option>
                             <option value="name">商品名順</option>
-                          </select>
-                        </form>
+                        </select>
+                     </form>
                  </li>
                 <button id="cart-btn" class="btn btn-outline-dark position-relative">
                     <i class="bi bi-cart"></i> カート

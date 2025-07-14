@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // HTML側で id="searchInput" と id="searchButton" が必要です
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
-    const keyword = null;
-
+    let keyword = null; // 検索実行時に使用する
+    let sotFlg = null; // 文字検索かソートかを判別するフラグ
 
     // 検索ボタンクリック時のイベントリスナー
     if (searchButton) { // HTMLにボタンが存在するか確認
@@ -34,6 +34,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
+    // セレクトボックスの値が変わると実行
+    document.getElementById('sortExe').addEventListener('change', function() {
+        // セレクトボックスのvalueを取得
+        keyword = document.getElementById('sortExe').value;
+        sotFlg = true;
+        fetchProducts(keyword);
+    });
     
     // 商品一覧の取得と表示
     fetchProducts(keyword);
@@ -58,16 +65,23 @@ document.addEventListener('DOMContentLoaded', function() {
         submitOrder();
     });
     
+    
     // 商品一覧を取得して表示する関数
-    // 商品一覧を取得して表示する関数
-    async function fetchProducts(keyword) { // デフォルト値を設定
+     async function fetchProducts(keyword) { // デフォルト値を設定
         try {
             // ★★★ 修正箇所: キーワードの有無でAPIエンドポイントを切り替える ★★★
-            let url =null;
+            let url = null;
             if (keyword !== null) { // キーワードが空ではない場合
-                // キーワードがある場合は /api/products/search エンドポイントを使用
                 keyword = keyword.trim()
-                url = `${API_BASE}/products/search?keyword=${encodeURIComponent(keyword)}`;
+                if (sotFlg) {
+                    // sotFlgがtrueの場合（セレクトボックスの値が変更された場合）
+                    url = `${API_BASE}/products/sort?keyword=${encodeURIComponent(keyword)}`;
+                }
+                else {
+                    // それ以外の場合(検索ボタンが押下された場合)
+                    // /api/products/search エンドポイントを使用
+                    url = `${API_BASE}/products/search?keyword=${encodeURIComponent(keyword)}`;
+                }
             } else {
                 // キーワードがない場合は /api/products エンドポイントを使用（全商品取得）
                 url = `${API_BASE}/products`;
