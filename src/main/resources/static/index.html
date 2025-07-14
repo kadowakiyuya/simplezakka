@@ -11,68 +11,98 @@
 </head>
 
 <body>
-    <div class="container">
-        <header class="d-flex justify-content-between align-items-center py-3 mb-4 border-bottom">
-    <!-- 左：検索バー -->
-    <div class="d-flex align-items-center">
-        <div class="input-group">
-            <input type="text" id="searchInput" class="form-control" placeholder="商品名を検索..." aria-label="商品名を検索">
-            <button class="btn btn-outline-secondary" type="button" id="searchButton">
-                <i class="bi bi-search"></i>
-            </button>
-        </div>
-    </div>
-
-    <!-- 中央：サイトタイトル -->
-    <a href="/" class="text-dark text-decoration-none" style="font-family: 'Zen Kaku Gothic New', sans-serif;">
-        <span class="fs-4 text-center">シンプル雑貨オンライン</span>
-    </a>
-
-    <!-- 右：カテゴリ選択＋カート -->
-    <div class="d-flex flex-column align-items-end">
-        <!-- カテゴリ選択 -->
-        <form class="mb-2">
-            <div class="input-group">
-                <select id="categorySelect" class="form-select">
-                    <option value="">カテゴリを選択</option>
-                </select>
-                <button class="btn btn-outline-light" type="submit">移動</button> 
-            </div>
-        </form>
-
-        <!-- カートボタン -->
-        <button id="cart-btn" class="btn btn-outline-dark position-relative">
-            <i class="bi bi-cart"></i> カート
-            <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge">
-                0
-            </span>
-        </button>
-    </div>
-</header>
-
+ <div class="container">
+  <header class="py-3 mb-4 border-bottom">
+     <div class="container">
+ 
+    <!-- 1段目：中央タイトル -->
+         <div class="w-100 text-center mt-3" style="border-bottom: 1px solid #ccc; padding-bottom: 0.5rem;">
+             <a href="/" class="text-dark text-decoration-none">
+                 <span class="fs-4">シンプル雑貨オンライン</span>
+             </a>
+         </div>
+ 
+    <!-- 2段目：検索・カテゴリ・ソート・カート -->
+      <div class="d-flex justify-content-between align-items-start mt-3">
+    <!-- 左：検索＆カテゴリ＆ソート -->
+         <div class="d-flex flex-column">
+    <!-- 検索バー -->
+             <div class="input-group mb-2">
+                 <input type="text" id="searchInput" class="form-control" placeholder="商品名を検索..." aria-label="商品名を検索">
+                     <button class="btn btn-outline-secondary" type="button" id="searchButton">
+                             <i class="bi bi-search"></i>
+                     </button>
+             </div>
+ 
+    <!-- カテゴリ選択 -->
+         <form method="get" onsubmit="return redirectToCategory()" class="mb-2">
+             <div class="input-group">
+                 <select id="categorySelect" class="form-select">
+                     <option value="" disabled selected hidden>カテゴリを選択</option>
+                     {% for cat in categories %}
+                     <option value="{{ cat.slug }}">文房具</option>
+                     {% endfor %}
+                 </select>
+                 <button class="btn btn-outline-light" type="submit">移動</button>
+             </div>
+         </form>
+ 
+    <!-- ソートセレクト -->
+             <div class="input-group">
+                 <select name="sort" id="sortExe" class="form-select">
+                     <option value="new">新着順</option>
+                     <option value="price_asc">価格が安い順</option>
+                     <option value="price_desc">価格が高い順</option>
+                     <option value="name">商品名順</option>
+                 </select>
+             </div>
+         </div>
+ 
+    <!-- 右：カートボタン -->
+      <div class="d-flex flex-column align-items-end">
+         <button id="cart-btn" class="btn btn-outline-dark position-relative">
+         <i class="bi bi-cart"></i> カート
+             <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge">
+            0
+             </span>
+         </button>
+       </div>
+      </div>
+ 
+     </div>
+  </header>
 
         <div id="main-content">
             <!-- ここにコンテンツが動的に表示される -->
             <div id="products-container" class="row row-cols-1 row-cols-md-3 g-4 mb-5">
-                <!-- 商品リストがここに表示される -->
+            <!-- 商品リストがここに表示される -->
             </div>
         </div>
-    </div>
+ </div>
 
-    <!-- 商品詳細モーダル -->
-    <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="productModalTitle"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="productModalBody">
-                    <!-- 商品詳細情報 -->
-                </div>
-            </div>
+   <!-- 商品詳細モーダル -->
+<div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="productModalTitle"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="productModalBody">
+        <!-- 商品詳細情報（例として） -->
+        <p id="productDescription">ここに商品説明が入ります</p>
+
+        <!-- 数量入力欄 -->
+        <div class="mb-3">
+          <label for="quantityInput" class="form-label">数量</label>
+          <input type="number" id="quantityInput" class="form-control" min="1" value="1" data-stock="10">
+          <div class="form-text">在庫数以内で入力してください</div>
         </div>
+      </div>
     </div>
+  </div>
+</div>
+
 
     <!-- カートモーダル -->
     <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
@@ -87,7 +117,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">買い物を続ける</button>
-                    <button type="button" class="btn btn-primary" id="checkout-btn">注文手続きへ</button>
+                    <button type="button" class="btn btn-gold" id="checkout-btn">注文手続きへ</button>
                 </div>
             </div>
         </div>
@@ -127,7 +157,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                    <button type="button" class="btn btn-primary" id="confirm-order-btn">注文を確定する</button>
+                    <button type="button" class="btn btn-gold" id="confirm-order-btn">注文を確定する</button>
                 </div>
             </div>
         </div>
@@ -155,3 +185,4 @@
     <script src="main.js"></script>
 </body>
 </html>
+

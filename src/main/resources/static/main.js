@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // 検索フォームの要素を取得
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
+    let keyword = null; // 検索実行時に使用する
+    let sotFlg = null; // 文字検索かソートかを判別するフラグ
 
     // カテゴリ選択の要素を取得
     const categorySelect = document.getElementById('categorySelect');
@@ -18,35 +20,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // ★★★ 検索ボタンクリック時のイベントリスナー (変更なし) ★★★
     if (searchButton) {
         searchButton.addEventListener('click', function() {
-            const keyword = searchInput.value.trim();
-            const selectedCategory = categorySelect ? categorySelect.value : ''; // カテゴリ選択も考慮
-            fetchProducts(keyword, selectedCategory); // キーワードとカテゴリを渡す
-
-            // URLの更新 (任意)
-            const urlParams = new URLSearchParams();
-            if (keyword) {
-                urlParams.set('keyword', keyword);
-            }
-            if (selectedCategory) {
-                urlParams.set('category', selectedCategory);
-            }
-            const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
-            history.pushState({ keyword: keyword, category: selectedCategory }, '', newUrl);
+            keyword = searchInput.value.trim(); // 入力値を取得し、前後の空白を除去
+            fetchProducts(keyword); // 検索関数を呼び出す
         });
     }
 
-// --- カテゴリをプルダウンに挿入する関数 ---
-    async function populateCategories() {
-        if (!categorySelect) {
-            console.warn("カテゴリ選択要素 (ID: categorySelect) が見つかりませんでした。");
-            return;
-        }
-
-        try {
-            // /api/categories エンドポイントを呼び出す
-            const response = await fetch(`${API_BASE}/categories`);
-            if (!response.ok) {
-                throw new Error(`カテゴリリストの取得に失敗しました: ${response.status} ${response.statusText}`);
+    // 検索入力欄でEnterキーを押した時のイベントリスナー
+    if (searchInput) { // HTMLに入力欄が存在するか確認
+        searchInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                const keyword = searchInput.value.trim();
+                fetchProducts(keyword);
             }
             /// APIから ["家具", "インテリア", "食器"] のような文字列の配列が返される想定
             const categories = await response.json(); 
@@ -76,38 +60,29 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             console.warn(`URLパラメータのカテゴリ "${initialCategory}" は有効なオプションではありません。`);
         }
-        }
-
-    } catch (error) {
-        console.error('カテゴリの読み込みエラー:', error);
-        // ユーザーにエラーを通知するUIを追加することも検討
-    }
+    });
 }
 
-
-    // ★★★ 修正後のカテゴリ選択の change イベントリスナー ★★★
-    if (categorySelect) {
-        categorySelect.addEventListener('change', function() {
-            const selectedCategory = this.value; // 選択されたカテゴリの値を取得
-            const currentKeyword = searchInput.value.trim(); // 現在の検索キーワードも取得
-
-            // fetchProducts関数を呼び出し、カテゴリとキーワードの両方を渡す
-            fetchProducts(currentKeyword, selectedCategory);
-
-            // URLの更新 (任意): ブラウザのURLを更新して、ブックマークや戻る/進むボタンに対応させる
-            // History APIを使用
-            const urlParams = new URLSearchParams();
-            if (currentKeyword) {
-                urlParams.set('keyword', currentKeyword);
-            }
-            if (selectedCategory) {
-                urlParams.set('category', selectedCategory);
-            }
-            const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
-            history.pushState({ keyword: currentKeyword, category: selectedCategory }, '', newUrl);
-        });
+// カテゴリセレクトで Enter を押したとき（任意）
+categorySelect.addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+        const slug = categorySelect.value;
+        if (slug) {
+            window.location.href = `/category/${slug}/`;
+        }
     }
+});
 
+    // セレクトボックスの値が変わると実行
+    document.getElementById('sortExe').addEventListener('change', function() {
+        // セレクトボックスのvalueを取得
+        keyword = document.getElementById('sortExe').value;
+        sotFlg = true;
+        fetchProducts(keyword);
+    });
+    
+    // 商品一覧の取得と表示
+    fetchProducts(keyword);
     
     // カート情報の取得と表示
     updateCartDisplay();
@@ -130,20 +105,26 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     
-    // ★★★ fetchProducts 関数の変更 ★★★
-    // keyword と categoryName の両方を引数として受け取る
-    async function fetchProducts(keyword = '', categoryName = '') {
+    // 商品一覧を取得して表示する関数
+     async function fetchProducts(keyword) { // デフォルト値を設定
         try {
-            const urlParams = new URLSearchParams();
-            if (keyword) {
-                urlParams.set('keyword', keyword);
+            // ★★★ 修正箇所: キーワードの有無でAPIエンドポイントを切り替える ★★★
+            let url = null;
+            if (keyword !== null) { // キーワードが空ではない場合
+                keyword = keyword.trim()
+                if (sotFlg) {
+                    // sotFlgがtrueの場合（セレクトボックスの値が変更された場合）
+                    url = `${API_BASE}/products/sort?keyword=${encodeURIComponent(keyword)}`;
+                }
+                else {
+                    // それ以外の場合(検索ボタンが押下された場合)
+                    // /api/products/search エンドポイントを使用
+                    url = `${API_BASE}/products/search?keyword=${encodeURIComponent(keyword)}`;
+                }
+            } else {
+                // キーワードがない場合は /api/products エンドポイントを使用（全商品取得）
+                url = `${API_BASE}/products`;
             }
-            if (categoryName) {
-                urlParams.set('category', categoryName);
-            }
-
-            // クエリパラメータをURLに追加
-            const url = `${API_BASE}/products?${urlParams.toString()}`;
 
             const response = await fetch(url);
             if (!response.ok) {
@@ -190,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="card-body">
                         <h5 class="card-title">${product.name}</h5>
                         <p class="card-text">¥${product.price.toLocaleString()}</p>
-                        <button class="btn btn-outline-primary view-product" data-id="${product.productId}">詳細を見る</button>
+                        <button class="btn btn-gold view-product" data-id="${product.productId}">詳細を見る</button>
                     </div>
                 </div>
             `;
@@ -238,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <label for="quantity" class="me-2">数量:</label>
                         <input type="number" id="quantity" class="form-control w-25" value="1" min="1" max="${product.stock}">
                     </div>
-                    <button class="btn btn-primary add-to-cart" data-id="${product.productId}">カートに入れる</button>
+                    <button class="btn btn-gold add-to-cart" data-id="${product.productId}">カートに入れる</button>
                 </div>
             </div>
         `;
@@ -493,3 +474,18 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
 });
+// 数量入力が在庫を超えた場合に自動修正
+document.addEventListener('change', function (e) {
+    if (e.target.id === 'quantity') {
+        const input = e.target;
+        const max = parseInt(input.max, 10);
+        const value = parseInt(input.value, 10);
+
+        if (isNaN(value) || value < 1) {
+            input.value = 1;
+        } else if (value > max) {
+            input.value = max;
+        }
+    }
+});
+

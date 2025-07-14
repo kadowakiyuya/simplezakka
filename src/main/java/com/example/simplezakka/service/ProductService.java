@@ -56,24 +56,6 @@ public class ProductService {
                 .map(this::convertToListItem)
                 .collect(Collectors.toList());
     }
-
-    // --- category取得メソッド ---
-    public List<ProductCategory> findUniqueProductCategories() { 
-        // ProductRepositoryから全てのProductエンティティを取得
-        List<Product> products = productRepository.findAll(); // ここでデータを取得します
-
-        if (products == null || products.isEmpty()) {
-            return List.of(); // 空のリストを返す
-        }
-
-        Set<String> uniqueCategoryNames = products.stream()
-                .map(Product::getCategory) // Productからカテゴリ名を取得
-                .collect(Collectors.toSet()); // Setに収集することで重複を排除
-
-        return uniqueCategoryNames.stream()
-                .map(ProductCategory::new) // 各カテゴリ名からProductCategoryインスタンスを作成
-                .collect(Collectors.toList());
-    }
     
 
 

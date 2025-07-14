@@ -15,7 +15,7 @@ public class DataLoader implements CommandLineRunner {
 
     private final ProductRepository productRepository;
 
-    @Autowired
+
     public DataLoader(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
@@ -47,7 +47,7 @@ public class DataLoader implements CommandLineRunner {
                 "アロマディフューザー（ウッド）", 
                 "天然木を使用したシンプルなデザインのアロマディフューザー。LEDライト付き。",
                 "木材",
-                "寝具",
+                "インテリア",
                 4200, 
                 15, 
                 "/images/aroma-diffuser.png", 
@@ -59,7 +59,7 @@ public class DataLoader implements CommandLineRunner {
                 "コットンブランケット", 
                 "オーガニックコットン100%のやわらかブランケット。シンプルなデザインで様々なインテリアに合います。",
                 "コットン",
-                "寝具",
+                "インテリア",
                 5800, 
                 10, 
                 "/images/cotton-blanket.png", 
@@ -71,7 +71,7 @@ public class DataLoader implements CommandLineRunner {
                 "ステンレスタンブラー", 
                 "保温・保冷機能に優れたシンプルなデザインのステンレスタンブラー。容量350ml。",
                 "ステンレス",
-                null,
+                "キッチン用品",
                 2800, 
                 30, 
                 "/images/tumbler.png", 
@@ -83,7 +83,7 @@ public class DataLoader implements CommandLineRunner {
                 "ミニマルウォールクロック", 
                 "余計な装飾のないシンプルな壁掛け時計。静音設計。",
                 "ガラス",
-                null,
+                "インテリア",
                 3200, 
                 25, 
                 "/images/wall-clock.png", 
@@ -95,7 +95,7 @@ public class DataLoader implements CommandLineRunner {
                 "リネンクッションカバー", 
                 "天然リネン100%のクッションカバー。取り外して洗濯可能。45×45cm対応。",
                 "リネン",
-                null,
+                "インテリア",
                 2500, 
                 40, 
                 "/images/cushion-cover.png", 
@@ -107,7 +107,7 @@ public class DataLoader implements CommandLineRunner {
                 "陶器フラワーベース", 
                 "手作りの風合いが魅力の陶器製フラワーベース。シンプルな形状で花を引き立てます。",
                 "粘土",
-                null,
+                "インテリア",
                 4000, 
                 15, 
                 "/images/flower-vase.png", 
@@ -119,7 +119,7 @@ public class DataLoader implements CommandLineRunner {
                 "木製コースター（4枚セット）", 
                 "天然木を使用したシンプルなデザインのコースター。4枚セット。",
                 "木材",
-                null,
+                "キッチン用品",
                 1800, 
                 50, 
                 "/images/wooden-coaster.png", 
@@ -131,7 +131,7 @@ public class DataLoader implements CommandLineRunner {
                 "キャンバストートバッグ", 
                 "丈夫なキャンバス地で作られたシンプルなトートバッグ。内ポケット付き。",
                 "キャンバス",
-                null,
+                "ファッション小物",
                 3600, 
                 35, 
                 "/images/tote-bag.png", 
@@ -143,15 +143,102 @@ public class DataLoader implements CommandLineRunner {
                 "ガラス保存容器セット", 
                 "電子レンジ・食洗機対応のガラス製保存容器。3サイズセット。",
                 "ガラス",
-                null,
+                "キッチン用品",
                 4500, 
                 20, 
                 "/images/glass-container.png", 
                 false
 
 
-            )
+            ),
+            createProduct(                                                                                                                                                                 
+                "洗えるクッション",
+                "ご家庭の洗濯機で洗うことができます。",
+                "ポリエステル", 
+                "インテリア", 
+                4000, 
+                20, 
+                "/images/スクリーンショット 2025-07-11 181052.png", 
+                true
+                
+            ),
+            createProduct(                   
+                "油性ボールペン",
+                "機能性とモダンなデザインを併せ持つ。", 
+                "プラスチック", 
+                "文房具", 
+                3200, 
+                15, 
+                "/images/スクリーンショット 2025-07-14 095635.png", 
+                true
+                
+            ),
+            createProduct(
+                "デザイナーズチェア", 
+                "テーブルに肘をかけ足を浮かすことができる軽量チェアーで設計されておりアームチェアーのような肘がついているデザイナーズチェアー", 
+                "ブナ・アッシュ・メープル・チェリー・ナラ・ウォールナットなど", 
+                "家具", 
+                9000, 
+                3, 
+                "/images/椅子.jpg", 
+                true
+            ),
+            createProduct(
+                "折り畳みテーブル", 
+                "コンパクトな折り畳みテーブル", 
+                "天板：中質繊維板MDF、オーク転写(PU塗装)　脚：天然木ラバーウッド(PU塗装)フェルト付", 
+                "家具", 
+                3600, 
+                5, 
+                "/images/折り畳みテーブル.jpg", 
+                true
+                
+            ),
+            createProduct(
+                "マグカップ（ブラック）", 
+                "生涯を共にしたくなる「本物」を日本の職人の手づくりで実現したブランド", 
+                "プラスチック", 
+                "キッチン用品", 
+                1000, 
+                30, 
+                "/images/マグカップ.webp", 
+                true
+                ),
+            createProduct(
+                "本革財布", 
+                "キメの細かいシボ感で滑らかな手触りの上質なシュリンクレザーを使用して製作した２つ折り財布です。", 
+                "本革", 
+                "ファッション小物", 
+                5000, 
+                5, 
+                "/images/財布.webp", 
+                true
+                ) ,
+            createProduct(
+                "ステンレス水筒（200ml）",
+                "携帯しやすいコンパクトサイズ。口当たりよく飲めるよう、飲み口の仕様を工夫しました。", 
+                "ステンレス",
+                "日用品", 
+                 1500, 
+                 20, 
+                "/images/水筒.jpg", 
+                true
+                ),
+            createProduct(
+                "モダンデスクライト", 
+                "木製ベースの金属製テーブルランプ",
+                "木材、金属", 
+                "インテリア", 
+                4500, 
+                10, 
+                "/images/テーブルランプ.jpg", 
+                true
+                )
+
+
+
         );
+        
         
         productRepository.saveAll(products);
     }
