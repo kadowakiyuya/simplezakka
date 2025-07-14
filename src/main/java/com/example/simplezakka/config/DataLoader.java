@@ -186,7 +186,7 @@ public class DataLoader implements CommandLineRunner {
             createProduct(
                 "折り畳みテーブル", 
                 "コンパクトな折り畳みテーブル", 
-                "メラミン樹脂化粧中密度繊維板", 
+                "天板：中質繊維板MDF、オーク転写(PU塗装)　脚：天然木ラバーウッド(PU塗装)フェルト付", 
                 "家具", 
                 3600, 
                 5, 
