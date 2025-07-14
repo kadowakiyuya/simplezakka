@@ -184,13 +184,13 @@ public class DataLoader implements CommandLineRunner {
                 true
             ),
             createProduct(
-                "折り畳みローテーブル", 
+                "折り畳みテーブル", 
                 "コンパクトな折り畳みテーブル", 
                 "メラミン樹脂化粧中密度繊維板", 
                 "家具", 
                 3600, 
                 5, 
-                "/images/31SWGiR9K9L._AC_.jpg", 
+                "/images/折り畳みテーブル.jpg", 
                 true
                 
             ),
