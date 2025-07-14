@@ -211,7 +211,7 @@ public class DataLoader implements CommandLineRunner {
                 "ファッション小物", 
                 5000, 
                 10, 
-                "/images/椅子.jpg", 
+                "/images/財布.webp", 
                 true
                 ) 
 
