@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 検索ボタンクリック時のイベントリスナー
     if (searchButton) { // HTMLにボタンが存在するか確認
         searchButton.addEventListener('click', function() {
-          keyword = searchInput.value.trim(); // 入力値を取得し、前後の空白を除去
+            keyword = searchInput.value.trim(); // 入力値を取得し、前後の空白を除去
             fetchProducts(keyword); // 検索関数を呼び出す
         });
     }
