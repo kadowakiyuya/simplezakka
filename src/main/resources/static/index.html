@@ -31,15 +31,12 @@
     <!-- 右：カテゴリ選択＋カート -->
     <div class="d-flex flex-column align-items-end">
         <!-- カテゴリ選択 -->
-        <form method="get" onsubmit="return redirectToCategory()" class="mb-2">
+        <form class="mb-2">
             <div class="input-group">
                 <select id="categorySelect" class="form-select">
                     <option value="">カテゴリを選択</option>
-                    {% for cat in categories %}
-                        <option value="{{ cat.slug }}">文房具</option>
-                    {% endfor %}
                 </select>
-                <button class="btn btn-outline-light" type="submit">移動</button>
+                <button class="btn btn-outline-light" type="submit">移動</button> 
             </div>
         </form>
 

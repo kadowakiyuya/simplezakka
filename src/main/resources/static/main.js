@@ -9,57 +9,105 @@ document.addEventListener('DOMContentLoaded', function() {
     const API_BASE = '/api';
 
     // 検索フォームの要素を取得
-    // HTML側で id="searchInput" と id="searchButton" が必要です
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
 
-    // 検索ボタンクリック時のイベントリスナー
-    if (searchButton) { // HTMLにボタンが存在するか確認
+    // カテゴリ選択の要素を取得
+    const categorySelect = document.getElementById('categorySelect');
+
+    // ★★★ 検索ボタンクリック時のイベントリスナー (変更なし) ★★★
+    if (searchButton) {
         searchButton.addEventListener('click', function() {
-            const keyword = searchInput.value.trim(); // 入力値を取得し、前後の空白を除去
-            fetchProducts(keyword); // 検索関数を呼び出す
-        });
-    }
+            const keyword = searchInput.value.trim();
+            const selectedCategory = categorySelect ? categorySelect.value : ''; // カテゴリ選択も考慮
+            fetchProducts(keyword, selectedCategory); // キーワードとカテゴリを渡す
 
-    // 検索入力欄でEnterキーを押した時のイベントリスナー
-    if (searchInput) { // HTMLに入力欄が存在するか確認
-        searchInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                const keyword = searchInput.value.trim();
-                fetchProducts(keyword);
+            // URLの更新 (任意)
+            const urlParams = new URLSearchParams();
+            if (keyword) {
+                urlParams.set('keyword', keyword);
             }
+            if (selectedCategory) {
+                urlParams.set('category', selectedCategory);
+            }
+            const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+            history.pushState({ keyword: keyword, category: selectedCategory }, '', newUrl);
         });
     }
 
-// カテゴリ選択とボタンの要素を取得
-const categorySelect = document.getElementById('categorySelect');
-
-// カテゴリ選択ボタンクリック時のイベント
-if (searchButton && categorySelect) {
-    searchButton.addEventListener('click', function () {
-        const slug = categorySelect.value;
-        if (slug) {
-            // カテゴリに対応するURLに遷移
-            window.location.href = `/category/${slug}/`;
-        } else {
-            alert("カテゴリを選択してください");
+// --- カテゴリをプルダウンに挿入する関数 ---
+    async function populateCategories() {
+        if (!categorySelect) {
+            console.warn("カテゴリ選択要素 (ID: categorySelect) が見つかりませんでした。");
+            return;
         }
-    });
+
+        try {
+            // /api/categories エンドポイントを呼び出す
+            const response = await fetch(`${API_BASE}/categories`);
+            if (!response.ok) {
+                throw new Error(`カテゴリリストの取得に失敗しました: ${response.status} ${response.statusText}`);
+            }
+            /// APIから ["家具", "インテリア", "食器"] のような文字列の配列が返される想定
+            const categories = await response.json(); 
+
+            // 既存の「カテゴリを選択」オプション以外をクリア
+            categorySelect.innerHTML = '<option value="">カテゴリを選択</option>';
+
+            // 取得したカテゴリをプルダウンに追加
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                // --- 変更点3 ---
+                // category変数が直接カテゴリの文字列であるため、`.name`などは不要
+                option.value = category;        // value にカテゴリ名文字列を設定
+                option.textContent = category;  // 表示テキストにカテゴリ名文字列を設定
+                categorySelect.appendChild(option);
+            });
+
+        // URLパラメータに基づいて初期選択を行う
+        const initialCategory = new URLSearchParams(window.location.search).get('category') || '';
+        if (initialCategory) {
+            // オプションが存在するか確認し、存在すれば選択
+        const optionExists = Array.from(categorySelect.options).some(
+            opt => opt.value === initialCategory
+        );
+        if (optionExists) {
+            categorySelect.value = initialCategory;
+        } else {
+            console.warn(`URLパラメータのカテゴリ "${initialCategory}" は有効なオプションではありません。`);
+        }
+        }
+
+    } catch (error) {
+        console.error('カテゴリの読み込みエラー:', error);
+        // ユーザーにエラーを通知するUIを追加することも検討
+    }
 }
 
-// カテゴリセレクトで Enter を押したとき（任意）
-categorySelect.addEventListener('keypress', function (event) {
-    if (event.key === 'Enter') {
-        const slug = categorySelect.value;
-        if (slug) {
-            window.location.href = `/category/${slug}/`;
-        }
-    }
-});
 
-    
-    // 商品一覧の取得と表示
-    fetchProducts();
+    // ★★★ 修正後のカテゴリ選択の change イベントリスナー ★★★
+    if (categorySelect) {
+        categorySelect.addEventListener('change', function() {
+            const selectedCategory = this.value; // 選択されたカテゴリの値を取得
+            const currentKeyword = searchInput.value.trim(); // 現在の検索キーワードも取得
+
+            // fetchProducts関数を呼び出し、カテゴリとキーワードの両方を渡す
+            fetchProducts(currentKeyword, selectedCategory);
+
+            // URLの更新 (任意): ブラウザのURLを更新して、ブックマークや戻る/進むボタンに対応させる
+            // History APIを使用
+            const urlParams = new URLSearchParams();
+            if (currentKeyword) {
+                urlParams.set('keyword', currentKeyword);
+            }
+            if (selectedCategory) {
+                urlParams.set('category', selectedCategory);
+            }
+            const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+            history.pushState({ keyword: currentKeyword, category: selectedCategory }, '', newUrl);
+        });
+    }
+
     
     // カート情報の取得と表示
     updateCartDisplay();
@@ -81,19 +129,21 @@ categorySelect.addEventListener('keypress', function (event) {
         submitOrder();
     });
     
-    // 商品一覧を取得して表示する関数
-    // 商品一覧を取得して表示する関数
-    async function fetchProducts(keyword = '') { // デフォルト値を設定
+    
+    // ★★★ fetchProducts 関数の変更 ★★★
+    // keyword と categoryName の両方を引数として受け取る
+    async function fetchProducts(keyword = '', categoryName = '') {
         try {
-            // ★★★ 修正箇所: キーワードの有無でAPIエンドポイントを切り替える ★★★
-            let url;
-            if (keyword.trim() !== '') { // キーワードが空ではない場合
-                // キーワードがある場合は /api/products/search エンドポイントを使用
-                url = `${API_BASE}/products/search?keyword=${encodeURIComponent(keyword)}`;
-            } else {
-                // キーワードがない場合は /api/products エンドポイントを使用（全商品取得）
-                url = `${API_BASE}/products`;
+            const urlParams = new URLSearchParams();
+            if (keyword) {
+                urlParams.set('keyword', keyword);
             }
+            if (categoryName) {
+                urlParams.set('category', categoryName);
+            }
+
+            // クエリパラメータをURLに追加
+            const url = `${API_BASE}/products?${urlParams.toString()}`;
 
             const response = await fetch(url);
             if (!response.ok) {
@@ -102,11 +152,12 @@ categorySelect.addEventListener('keypress', function (event) {
             const products = await response.json();
             displayProducts(products);
 
-            // 検索結果がない場合の表示を追加するとより親切です
-            if (products.length === 0 && keyword.trim() !== '') {
-                document.getElementById('products-container').innerHTML = `<p class="text-center w-100">「${keyword}」に一致する商品は見つかりませんでした。</p>`;
-            } else if (products.length === 0 && keyword.trim() === '') {
-                 document.getElementById('products-container').innerHTML = `<p class="text-center w-100">商品がありません。</p>`;
+            if (products.length === 0) {
+                let message = '商品が見つかりませんでした。';
+                if (keyword || categoryName) {
+                    message = `「${keyword || ''} ${categoryName ? 'カテゴリ:' + categoryName : ''}」に一致する商品は見つかりませんでした。`;
+                }
+                document.getElementById('products-container').innerHTML = `<p class="text-center w-100">${message}</p>`;
             }
 
         } catch (error) {
@@ -114,7 +165,17 @@ categorySelect.addEventListener('keypress', function (event) {
             alert('商品の読み込みに失敗しました');
         }
     }
-    
+
+    // 初期読み込み時にもURLパラメータを考慮して商品をフェッチ
+    populateCategories().then(() => {
+        const initialKeyword = new URLSearchParams(window.location.search).get('keyword') || '';
+        
+        if (searchInput) searchInput.value = initialKeyword;
+        
+        // populateCategories()で既に初期カテゴリが設定されているか、デフォルト値が使われているはず
+        const currentSelectedCategory = categorySelect ? categorySelect.value : '';
+        fetchProducts(initialKeyword, currentSelectedCategory); // 初期表示
+    });
     // 商品一覧を表示する関数
     function displayProducts(products) {
         const container = document.getElementById('products-container');

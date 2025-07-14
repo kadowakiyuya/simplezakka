@@ -25,6 +25,16 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findByCategory(String categoryName);
     // カテゴリ名での完全一致検索メソッドここまで
 
+    // 商品名または説明での部分一致、かつカテゴリでの完全一致検索
+    @Query("SELECT p FROM Product p WHERE " +
+           "(:keyword IS NULL OR :keyword = '' OR LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%'))) AND " +
+           "(:category IS NULL OR :category = '' OR LOWER(p.category) = LOWER(:category))")
+    List<Product> findByKeywordAndCategory(String keyword, String category);
+    
+    // 重複しないカテゴリのリストを取得
+    @Query("SELECT DISTINCT p.category FROM Product p WHERE p.category IS NOT NULL ORDER BY p.category")
+    List<String> findDistinctCategories();
+    
     @Modifying
     @Query("UPDATE Product p SET p.stock = p.stock - ?2 WHERE p.productId = ?1 AND p.stock >= ?2")
     int decreaseStock(Integer productId, Integer quantity);

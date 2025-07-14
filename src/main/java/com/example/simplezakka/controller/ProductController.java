@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.simplezakka.dto.product.ProductCategory;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api")
 public class ProductController {
 
     private final ProductService productService;
@@ -27,46 +30,35 @@ public class ProductController {
     // --- 商品名検索エンドポイント ---
     // このエンドポイントは、パス変数を含むエンドポイントよりも物理的に上に配置することが推奨されますが、
     // パス変数に正規表現を追加することで、より確実にルーティングを制御できます。
-    @GetMapping("/search")
-    public ResponseEntity<List<ProductListItem>> searchProducts
-        (@RequestParam(required = false) String keyword, 
-        @RequestParam(required = false) String categoryName
-        ) {
-        List<ProductListItem> products;
+    @GetMapping("/products")
+    public ResponseEntity<List<ProductListItem>> getProducts(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String category) { 
 
-        if (keyword != null && !keyword.isEmpty()) {
-        // キーワードのみで検索
-            products = productService.searchProductsByName(keyword);
-        } 
-        else if (categoryName != null && !categoryName.isEmpty()) {
-        // カテゴリー名のみで検索
-            products = productService.searchProductsByCategory(categoryName);
-        }
-        else {
-            // キーワードもカテゴリー名も指定されていない場合は全商品を返す
-            products = productService.findAllProducts();
-        }
+        // ProductServiceの新しい統合された検索メソッドを呼び出します
+        List<ProductListItem> products = productService.searchAndFilterProducts(keyword, category);
         return ResponseEntity.ok(products);
 
     }
 
    
 
-    // --- 全ての商品リスト取得エンドポイント ---
-    @GetMapping
-    public ResponseEntity<List<ProductListItem>> getAllProducts() {
-        List<ProductListItem> products = productService.findAllProducts();
-        return ResponseEntity.ok(products);
-    }
-
     // --- IDによる商品詳細取得エンドポイント ---
-    // ★★★ 修正箇所: {productId} に正規表現を追加し、数値のみにマッチするようにする ★★★
-    @GetMapping("/{productId:[0-9]+}") // ここを修正しました
+    @GetMapping("/products/{productId:[0-9]+}") // ここを修正しました
     public ResponseEntity<ProductDetail> getProductById(@PathVariable Integer productId) {
         ProductDetail product = productService.findProductById(productId);
         if (product == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(product);
+    }
+
+    
+    
+    // --- カテゴリ名による商品一覧取得エンドポイント ---
+    @GetMapping("/products/category/{categoryName}")
+    public ResponseEntity<List<ProductListItem>> getProductsByCategory(@PathVariable String categoryName) {
+        List<ProductListItem> products = productService.searchAndFilterProducts(null, categoryName);
+        return ResponseEntity.ok(products);
     }
 }
