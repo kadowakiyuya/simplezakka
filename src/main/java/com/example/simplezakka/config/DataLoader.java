@@ -174,6 +174,7 @@ public class DataLoader implements CommandLineRunner {
                 
             ),
             createProduct(
+<<<<<<< HEAD
                 "椅子", 
                 "テーブルに肘をかけ足を浮かすことができる軽量チェアーで設計されておりアームチェアーのような肘がついているデザイナーズチェアー", 
                 "ブナ・アッシュ・メープル・チェリー・ナラ・ウォールナットなど", 
@@ -185,6 +186,32 @@ public class DataLoader implements CommandLineRunner {
             )
 
 
+=======
+                "ポケット付きミニトートバッグ", 
+                "デザインと機能性を兼ね備えたトートバッグ", 
+                "革", 
+                "ファッション小物", 
+                3100, 
+                5, 
+                "/images/71tLgxw8HGL._AC_SX679_.jpg", 
+                true
+                
+            ),
+            createProduct(
+                "折り畳みローテーブル", 
+                "コンパクトな折り畳みテーブル", 
+                "メラミン樹脂化粧中密度繊維板", 
+                "家具", 
+                3600, 
+                3, 
+                "/images/31SWGiR9K9L._AC_.jpg", 
+                true
+                
+            )
+
+
+
+>>>>>>> 64ba3ad76ae413398b75276de4a41fb3bf8fc7cb
         );
         
         
