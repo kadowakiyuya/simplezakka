@@ -223,6 +223,16 @@ public class DataLoader implements CommandLineRunner {
                  20, 
                 "/images/水筒.jpg", 
                 true
+                ),
+            createProduct(
+                "モダンデスクライト", 
+                "木製ベースの金属製テーブルランプ",
+                "木材、金属", 
+                "インテリア", 
+                4500, 
+                10, 
+                "/images/テーブルランプ.jpg", 
+                true
                 )
 
 
