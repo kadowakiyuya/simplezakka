@@ -12,11 +12,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // HTML側で id="searchInput" と id="searchButton" が必要です
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
+    const keyword = null;
+
 
     // 検索ボタンクリック時のイベントリスナー
     if (searchButton) { // HTMLにボタンが存在するか確認
         searchButton.addEventListener('click', function() {
-            const keyword = searchInput.value.trim(); // 入力値を取得し、前後の空白を除去
+          keyword = searchInput.value.trim(); // 入力値を取得し、前後の空白を除去
             fetchProducts(keyword); // 検索関数を呼び出す
         });
     }
@@ -34,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     
     // 商品一覧の取得と表示
-    fetchProducts();
+    fetchProducts(keyword);
     
     // カート情報の取得と表示
     updateCartDisplay();
@@ -58,12 +60,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 商品一覧を取得して表示する関数
     // 商品一覧を取得して表示する関数
-    async function fetchProducts(keyword = '') { // デフォルト値を設定
+    async function fetchProducts(keyword) { // デフォルト値を設定
         try {
             // ★★★ 修正箇所: キーワードの有無でAPIエンドポイントを切り替える ★★★
-            let url;
-            if (keyword.trim() !== '') { // キーワードが空ではない場合
+            let url =null;
+            if (keyword !== null) { // キーワードが空ではない場合
                 // キーワードがある場合は /api/products/search エンドポイントを使用
+                keyword = keyword.trim()
                 url = `${API_BASE}/products/search?keyword=${encodeURIComponent(keyword)}`;
             } else {
                 // キーワードがない場合は /api/products エンドポイントを使用（全商品取得）
