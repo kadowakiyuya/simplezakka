@@ -49,7 +49,7 @@ public class ProductService {
    
     /**
      * 商品名で部分一致検索を行うサービスメソッド。
-     * キーワードがnullまたは空文字の場合は、すべての商品を返します。
+     * キーワードがnullまたは空文字の場合は、すべての商品を返す。
      *
      * @param keyword 検索キーワード
      * @return 検索条件に合致する商品のリスト（ProductListItem形式）
@@ -59,12 +59,20 @@ public class ProductService {
         if (keyword == null || keyword.trim().isEmpty()) {
             // 例：キーワードがない場合は全件表示
             return findAllProducts();
-            // あるいは、キーワードがない場合は何も表示しないなら、以下のようにする
-            // return new ArrayList<>();
         }
         // ProductRepositoryのfindByNameContainingIgnoreCaseメソッドを呼び出し、
         // その結果をProductListItemのリストに変換して返す
         return productRepository.findByNameContainingIgnoreCase(keyword.trim()).stream()
+                .map(this::convertToListItem)
+                .collect(Collectors.toList());
+    }
+
+    // カテゴリ検索メソッド
+    public List<ProductListItem> searchProductsByCategory(String keyword) {
+                
+        // ProductRepositoryのfindByNameContainingIgnoreCaseメソッドを呼び出し、
+        // その結果をProductListItemのリストに変換して返す
+        return productRepository.findByCategory(keyword.trim()).stream()
                 .map(this::convertToListItem)
                 .collect(Collectors.toList());
     }
@@ -87,6 +95,8 @@ public class ProductService {
                 product.getName(),
                 product.getPrice(),
                 product.getDescription(),
+                product.getMaterial(),
+                product.getCategory(),
                 product.getStock(),
                 product.getImageUrl()
         );

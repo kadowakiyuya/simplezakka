@@ -33,6 +33,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+// カテゴリ選択とボタンの要素を取得
+const categorySelect = document.getElementById('categorySelect');
+
+// カテゴリ選択ボタンクリック時のイベント
+if (searchButton && categorySelect) {
+    searchButton.addEventListener('click', function () {
+        const slug = categorySelect.value;
+        if (slug) {
+            // カテゴリに対応するURLに遷移
+            window.location.href = `/category/${slug}/`;
+        } else {
+            alert("カテゴリを選択してください");
+        }
+    });
+}
+
+// カテゴリセレクトで Enter を押したとき（任意）
+categorySelect.addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+        const slug = categorySelect.value;
+        if (slug) {
+            window.location.href = `/category/${slug}/`;
+        }
+    }
+});
 
     // セレクトボックスの値が変わると実行
     document.getElementById('sortExe').addEventListener('change', function() {
@@ -121,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="card-body">
                         <h5 class="card-title">${product.name}</h5>
                         <p class="card-text">¥${product.price.toLocaleString()}</p>
-                        <button class="btn btn-outline-primary view-product" data-id="${product.productId}">詳細を見る</button>
+                        <button class="btn btn-gold view-product" data-id="${product.productId}">詳細を見る</button>
                     </div>
                 </div>
             `;
@@ -162,12 +187,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="col-md-6">
                     <p class="fs-4">¥${product.price.toLocaleString()}</p>
                     <p>${product.description}</p>
+                    <p>素材: ${product.material}</p>
+                    <p>カテゴリ: ${product.category}</p>
                     <p>在庫: ${product.stock} 個</p>
                     <div class="d-flex align-items-center mb-3">
                         <label for="quantity" class="me-2">数量:</label>
                         <input type="number" id="quantity" class="form-control w-25" value="1" min="1" max="${product.stock}">
                     </div>
-                    <button class="btn btn-primary add-to-cart" data-id="${product.productId}">カートに入れる</button>
+                    <button class="btn btn-gold add-to-cart" data-id="${product.productId}">カートに入れる</button>
                 </div>
             </div>
         `;
@@ -422,3 +449,18 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
 });
+// 数量入力が在庫を超えた場合に自動修正
+document.addEventListener('change', function (e) {
+    if (e.target.id === 'quantity') {
+        const input = e.target;
+        const max = parseInt(input.max, 10);
+        const value = parseInt(input.value, 10);
+
+        if (isNaN(value) || value < 1) {
+            input.value = 1;
+        } else if (value > max) {
+            input.value = max;
+        }
+    }
+});
+
