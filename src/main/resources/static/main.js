@@ -433,16 +433,17 @@ categorySelect.addEventListener('keypress', function (event) {
     }
 });
 // 数量入力が在庫を超えた場合に自動修正
-document.addEventListener('input', function (e) {
+document.addEventListener('change', function (e) {
     if (e.target.id === 'quantity') {
         const input = e.target;
-        const max = parseInt(input.max, 10); // inputのmax属性を参照（＝在庫数）
+        const max = parseInt(input.max, 10);
         const value = parseInt(input.value, 10);
 
-        if (value > max) {
-            input.value = max;
-        } else if (value < 1 || isNaN(value)) {
+        if (isNaN(value) || value < 1) {
             input.value = 1;
+        } else if (value > max) {
+            input.value = max;
         }
     }
 });
+
