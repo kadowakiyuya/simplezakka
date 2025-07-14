@@ -54,27 +54,27 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    // カテゴリ検索メソッド
-    public List<ProductListItem> searchProductsByCategoryName(String keyword) {
-                
-        // ProductRepositoryのfindByNameContainingIgnoreCaseメソッドを呼び出し、
-        // その結果をProductListItemのリストに変換して返す
-        return productRepository.findByNameContainingIgnoreCase(keyword.trim()).stream()
+    // すべての商品を取得
+    public List<ProductListItem> getAllProducts() {
+        return productRepository.findAll().stream()
                 .map(this::convertToListItem)
                 .collect(Collectors.toList());
     }
+
+    // カテゴリ名で商品を取得
+    public List<ProductListItem> getProductsByCategory(String categoryName) {
+        return productRepository.findByCategoryName(categoryName).stream()
+                .map(this::convertToListItem)
+                .collect(Collectors.toList());
+    }
+
+    // Product → ProductListItem への変換（例）
+    private ProductListItem convertToListItem(Product product) {
+        return new ProductListItem(product.getId() ,product.getName(), product.getPrice(), product.getImageUrl());
+    }
+    
    
     
-
-
-    private ProductListItem convertToListItem(Product product) {
-        return new ProductListItem(
-                product.getProductId(),
-                product.getName(),
-                product.getPrice(),
-                product.getImageUrl()
-        );
-    }
 
     private ProductDetail convertToDetail(Product product) {
         return new ProductDetail(

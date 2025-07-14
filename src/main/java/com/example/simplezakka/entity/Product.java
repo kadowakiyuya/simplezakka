@@ -52,4 +52,8 @@ public class Product {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    public Integer getId() {  
+        throw new UnsupportedOperationException("Unimplemented method 'getId'");
+    }
 }

@@ -50,4 +50,21 @@ public class ProductController {
         }
         return ResponseEntity.ok(product);
     }
-}
+
+
+// カテゴリによる商品取得API
+    @GetMapping("/api/products")
+    public ResponseEntity<List<ProductListItem>> getProductsByCategory(
+            @RequestParam(required = false) String category) {
+
+        List<ProductListItem> products;
+
+        if (category == null || category.isEmpty() || category.equals("all")) {
+            products = productService.getAllProducts(); // 全商品
+        } else {
+            products = productService.getProductsByCategory(category); // カテゴリ絞り込み
+        }
+
+        return ResponseEntity.ok(products);
+            }
+        }
