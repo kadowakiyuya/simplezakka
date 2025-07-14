@@ -193,7 +193,17 @@ public class DataLoader implements CommandLineRunner {
                 "/images/31SWGiR9K9L._AC_.jpg", 
                 true
                 
-            )
+            ),
+            createProduct(
+                "マグカップ", 
+                "生涯を共にしたくなる「本物」を日本の職人の手づくりで実現したブランド", 
+                "プラスチック", 
+                "キッチン用品", 
+                1000, 
+                30, 
+                "/images/マグカップ.webp", 
+                true
+                )
 
 
 
