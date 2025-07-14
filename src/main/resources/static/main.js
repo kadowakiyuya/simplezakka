@@ -129,7 +129,7 @@ categorySelect.addEventListener('keypress', function (event) {
                     <div class="card-body">
                         <h5 class="card-title">${product.name}</h5>
                         <p class="card-text">¥${product.price.toLocaleString()}</p>
-                        <button class="btn btn-outline-primary view-product" data-id="${product.productId}">詳細を見る</button>
+                        <button class="btn btn-gold view-product" data-id="${product.productId}">詳細を見る</button>
                     </div>
                 </div>
             `;

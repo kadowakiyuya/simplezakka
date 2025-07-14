@@ -19,3 +19,13 @@ body {
 .image-container {
     position: relative;
 }
+.btn-gold {
+    background-color: #FFD700;
+    color: #000;
+    border: none;
+}
+
+.btn-gold:hover {
+    background-color: #FFC300;
+    color: #000;
+}
