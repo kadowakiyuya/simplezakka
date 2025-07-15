@@ -14,15 +14,14 @@
     right: 5px;
 }
 body {
-    background-color: #f5f5f5; /* ここを好きなコードに */
-}
+    background-color: #f5f5f5; 
 .image-container {
     position: relative;
 }
 .btn-gold {
-    background-color: #e9d8ae;  /* 画像の色に近い落ち着いた金 */
-    color: #000;                /* 黒文字で読みやすく */
-    border: 1px solid #c2a74e;  /* 渋めの金で縁取り */
+    background-color: #e9d8ae;  
+    color: #000;               
+    border: 1px solid #c2a74e;  
     font-weight: bold;
     padding: 10px 20px;
     border-radius: 6px;
@@ -30,7 +29,7 @@ body {
 }
 
 .btn-gold:hover {
-    background-color: #f1e0b2;  /* 少し明るく */
+    background-color: #f1e0b2; 
     border-color: #b8973c;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
