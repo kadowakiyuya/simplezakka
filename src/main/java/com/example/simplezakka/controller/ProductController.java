@@ -15,29 +15,18 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
- // 検索（JSON）
-    @GetMapping("/sort")
-    public ResponseEntity<List<ProductListItem>> sortProducts(@RequestParam(required = false) String keyword) {
-        List<ProductListItem> products = productService.getSortedProducts(keyword);
-        return ResponseEntity.ok(products);
-    }
-
-    // 全商品取得（JSON）
-    @GetMapping
-    public ResponseEntity<List<ProductListItem>> getAllProducts() {
-        List<ProductListItem> products = productService.findAllProducts();
-        return ResponseEntity.ok(products);
-    }
-
-    // 検索（JSON）
-    @GetMapping("/search")
-    public ResponseEntity<List<ProductListItem>> searchProducts(@RequestParam(required = false) String keyword) {
-        List<ProductListItem> products = productService.searchProductsByName(keyword);
+    // 商品一覧の検索、フィルタリング、ソートを全てこのエンドポイントで処理
+    // 指定なしで全商品取得
+    @GetMapping // GET /api/products?keyword=...&category=...&sort=...
+    public ResponseEntity<List<ProductListItem>> getFilteredAndSortedProducts(
+            @RequestParam(required = false) String keyword,  // キーワード検索
+            @RequestParam(required = false) String category, // カテゴリー検索
+            @RequestParam(required = false, defaultValue = "new") String sort) { // sort
+        List<ProductListItem> products = productService.getFilteredAndSortedProducts(keyword, category, sort);
         return ResponseEntity.ok(products);
     }
 
