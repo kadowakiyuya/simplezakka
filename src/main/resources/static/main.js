@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
             productsContainer.insertAdjacentHTML('beforeend', productCard);
         });
 
-        // ★修正: カードクリックで商品詳細を表示するイベントは、displayProducts内で設定
+        // カードクリックで商品詳細を表示するイベントは、displayProducts内で設定
         productsContainer.querySelectorAll('.product-card').forEach(card => {
             card.addEventListener('click', function() {
                 fetchProductDetail(this.dataset.id);
@@ -103,10 +103,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 商品一覧を取得して表示する関数 (searchKeyword, selectedCategory, sortOrder を受け取るように修正)
-    async function fetchProducts(searchKeyword = '', selectedCategory = '', sortOrder = 'new') { 
+    // 商品一覧を取得して表示する関数 (searchKeyword, selectedCategory, sortOrder を受け取る)
+    async function fetchProducts(searchKeyword = '', selectedCategory = '', sortOrder = 'new') { //デフォルト値の設定
         try {
-            let url = `${API_BASE}/products`;
+            let url = `${API_BASE}/products`;　//　base　url
             const params = new URLSearchParams();
 
             if (searchKeyword.trim() !== '') {
@@ -115,12 +115,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (selectedCategory.trim() !== '') {
                 params.append('category', selectedCategory.trim());
             }
-            if (sortOrder && sortOrder !== 'new') { // 'new'はデフォルトなので除外
+            if (sortOrder && sortOrder !== 'new') { 
                 params.append('sort', sortOrder);
             }
 
             if (params.toString()) {
-                url += `?${params.toString()}`;
+                url += `?${params.toString()}`; // urlの構築（例_api/products?keyword=入力値)
             }
             
             const response = await fetch(url);
@@ -129,10 +129,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(`商品の取得に失敗しました: ${errorData.message || response.statusText}`);
             }
             const products = await response.json();
-            displayProducts(products); // displayProducts はこの時点で定義済み
+            displayProducts(products); //
 
-            // 検索結果がない場合の表示はdisplayProductsで処理されるため、重複を避ける
-            // if (products.length === 0) { ... } この部分はdisplayProducts関数内に移動済み
         } catch (error) {
             console.error('Error in fetchProducts:', error);
             alert(`商品の読み込みに失敗しました: ${error.message}`);
@@ -425,7 +423,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('orderCompleteBody').innerHTML = `
             <p>ご注文ありがとうございます。注文番号は <strong>${order.orderId}</strong> です。</p>
             <p>ご注文日時: ${new Date(order.orderDate).toLocaleString()}</p>
-           
+            <p>お客様のメールアドレスに注文確認メールをお送りしました。</p>
         `;
     }
 

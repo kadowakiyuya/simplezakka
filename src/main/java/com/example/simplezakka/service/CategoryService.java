@@ -3,7 +3,7 @@ package com.example.simplezakka.service;
 
 import com.example.simplezakka.entity.Product;
 import com.example.simplezakka.dto.product.ProductCategory; 
-import com.example.simplezakka.repository.ProductRepository; // ProductRepositoryを使用してユニークカテゴリを取得
+import com.example.simplezakka.repository.ProductRepository; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @Service
 public class CategoryService {
 
-    // Productのカテゴリ情報を利用してユニークカテゴリを取得するため、ProductRepositoryをインジェクト
     private final ProductRepository productRepository; 
 
     @Autowired

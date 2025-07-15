@@ -62,8 +62,6 @@ public class ProductService {
         // 1. フィルタリング処理
         if ((keyword != null && !keyword.trim().isEmpty()) && (category != null && !category.trim().isEmpty())) {
             // キーワードとカテゴリの両方で検索
-            // ProductRepository に findByNameContainingIgnoreCaseAndCategory というメソッドが必要になります。
-            // もし直接ない場合は、以下のように findAll() からフィルタリングすることも可能ですが、効率は落ちます。
             products = productRepository.findByNameContainingIgnoreCaseAndCategory(keyword.trim(), category.trim());
         } else if (keyword != null && !keyword.trim().isEmpty()) {
             // キーワードのみで検索
@@ -77,8 +75,6 @@ public class ProductService {
         }
 
         // 2. ソート処理
-        // Product エンティティに createdAt フィールド (LocalDateTime や Date 型) があることを前提としています。
-        // もし存在しない場合は、Product エンティティとデータベーススキーマを更新してください。
         Comparator<Product> comparator = null;
         switch (sort) {
             case "price_asc":
@@ -93,7 +89,6 @@ public class ProductService {
             case "new":
             default:
                 // 最新順 (createdAt の降順)
-                // Product エンティティに getCreatedAt() メソッドが必要です。
                 comparator = Comparator.comparing(Product::getCreatedAt).reversed();
                 break;
         }
