@@ -39,20 +39,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         products.forEach(product => {
-            const productCard = `
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 product-card" data-id="${product.productId}">
-                        <img src="${product.imageUrl || 'https://via.placeholder.com/300x200'}" class="card-img-top" alt="${product.name}">
-                        <div class="card-body">
-                            <h5 class="card-title">${product.name}</h5>
-                            <p class="card-text">¥${product.price.toLocaleString()}</p>
-                            <button class="btn btn-gold w-100 view-detail" data-id="${product.productId}">詳細を見る</button>
-                        </div>
+    const productCard = `
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 product-card d-flex flex-column" data-id="${product.productId}">
+                <img src="${product.imageUrl || 'https://via.placeholder.com/300x200'}" class="card-img-top" alt="${product.name}">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">${product.name}</h5>
+                    <p class="card-text">¥${product.price.toLocaleString()}</p>
+                    
+                    <div class="mt-auto">
+                        <button class="btn btn-gold view-detail" data-id="${product.productId}">詳細を見る</button>
                     </div>
                 </div>
-            `;
-            productsContainer.insertAdjacentHTML('beforeend', productCard);
-        });
+            </div>
+        </div>
+    `;
+    productsContainer.insertAdjacentHTML('beforeend', productCard);
+});
 
 productsContainer.querySelectorAll('.view-detail').forEach(button => {
     button.addEventListener('click', function(event) {
