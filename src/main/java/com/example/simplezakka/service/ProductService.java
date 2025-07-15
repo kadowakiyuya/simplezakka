@@ -1,20 +1,16 @@
+
 package com.example.simplezakka.service;
 
-import com.example.simplezakka.dto.product.ProductCategory;
 import com.example.simplezakka.dto.product.ProductDetail;
 import com.example.simplezakka.dto.product.ProductListItem;
 import com.example.simplezakka.entity.Product;
 import com.example.simplezakka.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.ArrayList; 
-import java.util.Arrays;
 import java.util.stream.Collectors;
-import java.util.Set;
 
 @Service
 public class ProductService {
@@ -25,6 +21,19 @@ public class ProductService {
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
+    public List<ProductListItem> getSortedProducts(String sort) {
+    switch (sort) {
+        case "price_asc":
+            return productRepository.findAllOrderByPriceAsc();
+        case "price_desc":
+            return productRepository.findAllOrderByPriceDesc();
+        case "name":
+            return productRepository.findAllOrderByName();
+        case "new":
+        default:
+            return productRepository.findAllOrderByCreatedAtDesc();
+    }
+    }
 
     public List<ProductListItem> findAllProducts() {
         return productRepository.findAll().stream()
@@ -32,30 +41,42 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-   
-        
     public ProductDetail findProductById(Integer productId) {
         Optional<Product> productOpt = productRepository.findById(productId);
         return productOpt.map(this::convertToDetail).orElse(null);
     }
 
    
-    // --- 統合された商品検索・フィルタリングメソッド ---
     /**
-     * キーワードとカテゴリ名に基づいて商品を検索・フィルタリングします。
-     * キーワードもカテゴリ名も指定されない場合は、すべての商品を返します。
+     * 商品名で部分一致検索を行うサービスメソッド。
+     * キーワードがnullまたは空文字の場合は、すべての商品を返す。
      *
-     * @param keyword 検索キーワード（商品名または説明の部分一致）
-     * @param categoryName カテゴリ名（完全一致）
-     * @return 検索条件に合致するProductListItemのリスト
+     * @param keyword 検索キーワード
+     * @return 検索条件に合致する商品のリスト（ProductListItem形式）
      */
-    public List<ProductListItem> searchAndFilterProducts(String keyword, String categoryName) {
-        // ProductRepositoryの新しいfindByKeywordAndCategoryメソッドを呼び出します
-        List<Product> products = productRepository.findByKeywordAndCategory(keyword, categoryName);
-        return products.stream()
+    public List<ProductListItem> searchProductsByName(String keyword) {
+        // キーワードがnullまたは空文字の場合のハンドリング
+        if (keyword == null || keyword.trim().isEmpty()) {
+            // 例：キーワードがない場合は全件表示
+            return findAllProducts();
+        }
+        // ProductRepositoryのfindByNameContainingIgnoreCaseメソッドを呼び出し、
+        // その結果をProductListItemのリストに変換して返す
+        return productRepository.findByNameContainingIgnoreCase(keyword.trim()).stream()
                 .map(this::convertToListItem)
                 .collect(Collectors.toList());
     }
+
+    // カテゴリ検索メソッド
+    public List<ProductListItem> searchProductsByCategory(String keyword) {
+                
+        // ProductRepositoryのfindByNameContainingIgnoreCaseメソッドを呼び出し、
+        // その結果をProductListItemのリストに変換して返す
+        return productRepository.findByCategory(keyword.trim()).stream()
+                .map(this::convertToListItem)
+                .collect(Collectors.toList());
+    }
+   
     
 
 

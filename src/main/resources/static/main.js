@@ -11,177 +11,132 @@ document.addEventListener('DOMContentLoaded', function() {
     // 検索フォームの要素を取得
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
-    let keyword = null; // 検索実行時に使用する
-    let sotFlg = null; // 文字検索かソートかを判別するフラグ
+    const categorySelect = document.getElementById('categorySelect'); 
+    const sortSelect = document.getElementById('sortExe');
 
-    // カテゴリ選択の要素を取得
-    const categorySelect = document.getElementById('categorySelect');
+    // --- ヘルパー関数群 ---
 
-    // ★★★ 検索ボタンクリック時のイベントリスナー (変更なし) ★★★
-    if (searchButton) {
-        searchButton.addEventListener('click', function() {
-            keyword = searchInput.value.trim(); // 入力値を取得し、前後の空白を除去
-            fetchProducts(keyword); // 検索関数を呼び出す
-        });
+    // フィルターの現在の値を取得する関数
+    function getCurrentFilters() {
+        const currentKeyword = searchInput ? searchInput.value.trim() : '';
+        const currentCategory = categorySelect ? categorySelect.value : '';
+        const currentSort = sortSelect ? sortSelect.value : 'new'; 
+        return { keyword: currentKeyword, category: currentCategory, sort: currentSort };
     }
 
-    // 検索入力欄でEnterキーを押した時のイベントリスナー
-    if (searchInput) { // HTMLに入力欄が存在するか確認
-        searchInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                const keyword = searchInput.value.trim();
-                fetchProducts(keyword);
-            }
-            /// APIから ["家具", "インテリア", "食器"] のような文字列の配列が返される想定
-            const categories = await response.json(); 
-
-            // 既存の「カテゴリを選択」オプション以外をクリア
-            categorySelect.innerHTML = '<option value="">カテゴリを選択</option>';
-
-            // 取得したカテゴリをプルダウンに追加
-            categories.forEach(category => {
-                const option = document.createElement('option');
-                // --- 変更点3 ---
-                // category変数が直接カテゴリの文字列であるため、`.name`などは不要
-                option.value = category;        // value にカテゴリ名文字列を設定
-                option.textContent = category;  // 表示テキストにカテゴリ名文字列を設定
-                categorySelect.appendChild(option);
-            });
-
-        // URLパラメータに基づいて初期選択を行う
-        const initialCategory = new URLSearchParams(window.location.search).get('category') || '';
-        if (initialCategory) {
-            // オプションが存在するか確認し、存在すれば選択
-        const optionExists = Array.from(categorySelect.options).some(
-            opt => opt.value === initialCategory
-        );
-        if (optionExists) {
-            categorySelect.value = initialCategory;
-        } else {
-            console.warn(`URLパラメータのカテゴリ "${initialCategory}" は有効なオプションではありません。`);
-        }
-    });
-}
-
-// カテゴリセレクトで Enter を押したとき（任意）
-categorySelect.addEventListener('keypress', function (event) {
-    if (event.key === 'Enter') {
-        const slug = categorySelect.value;
-        if (slug) {
-            window.location.href = `/category/${slug}/`;
-        }
-    }
-});
-
-    // セレクトボックスの値が変わると実行
-    document.getElementById('sortExe').addEventListener('change', function() {
-        // セレクトボックスのvalueを取得
-        keyword = document.getElementById('sortExe').value;
-        sotFlg = true;
-        fetchProducts(keyword);
-    });
-    
-    // 商品一覧の取得と表示
-    fetchProducts(keyword);
-    
-    // カート情報の取得と表示
-    updateCartDisplay();
-    
-    // カートボタンクリックイベント
-    document.getElementById('cart-btn').addEventListener('click', function() {
-        updateCartModalContent();
-        cartModal.show();
-    });
-    
-    // 注文手続きボタンクリックイベント
-    document.getElementById('checkout-btn').addEventListener('click', function() {
-        cartModal.hide();
-        checkoutModal.show();
-    });
-    
-    // 注文確定ボタンクリックイベント
-    document.getElementById('confirm-order-btn').addEventListener('click', function() {
-        submitOrder();
-    });
-    
-    
-    // 商品一覧を取得して表示する関数
-     async function fetchProducts(keyword) { // デフォルト値を設定
-        try {
-            // ★★★ 修正箇所: キーワードの有無でAPIエンドポイントを切り替える ★★★
-            let url = null;
-            if (keyword !== null) { // キーワードが空ではない場合
-                keyword = keyword.trim()
-                if (sotFlg) {
-                    // sotFlgがtrueの場合（セレクトボックスの値が変更された場合）
-                    url = `${API_BASE}/products/sort?keyword=${encodeURIComponent(keyword)}`;
-                }
-                else {
-                    // それ以外の場合(検索ボタンが押下された場合)
-                    // /api/products/search エンドポイントを使用
-                    url = `${API_BASE}/products/search?keyword=${encodeURIComponent(keyword)}`;
-                }
-            } else {
-                // キーワードがない場合は /api/products エンドポイントを使用（全商品取得）
-                url = `${API_BASE}/products`;
-            }
-
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error('商品の取得に失敗しました');
-            }
-            const products = await response.json();
-            displayProducts(products);
-
-            if (products.length === 0) {
-                let message = '商品が見つかりませんでした。';
-                if (keyword || categoryName) {
-                    message = `「${keyword || ''} ${categoryName ? 'カテゴリ:' + categoryName : ''}」に一致する商品は見つかりませんでした。`;
-                }
-                document.getElementById('products-container').innerHTML = `<p class="text-center w-100">${message}</p>`;
-            }
-
-        } catch (error) {
-            console.error('Error:', error);
-            alert('商品の読み込みに失敗しました');
-        }
-    }
-
-    // 初期読み込み時にもURLパラメータを考慮して商品をフェッチ
-    populateCategories().then(() => {
-        const initialKeyword = new URLSearchParams(window.location.search).get('keyword') || '';
-        
-        if (searchInput) searchInput.value = initialKeyword;
-        
-        // populateCategories()で既に初期カテゴリが設定されているか、デフォルト値が使われているはず
-        const currentSelectedCategory = categorySelect ? categorySelect.value : '';
-        fetchProducts(initialKeyword, currentSelectedCategory); // 初期表示
-    });
     // 商品一覧を表示する関数
     function displayProducts(products) {
-        const container = document.getElementById('products-container');
-        container.innerHTML = '';
-        
+        const productsContainer = document.getElementById('products-container');
+        if (!productsContainer) {
+            console.error("商品を表示するコンテナ要素 (ID: products-container) が見つかりませんでした。");
+            return;
+        }
+        productsContainer.innerHTML = ''; // 既存の内容をクリア
+
+        if (products.length === 0) {
+            productsContainer.innerHTML = '<p class="text-center w-100">該当する商品が見つかりませんでした。</p>';
+            return;
+        }
+
         products.forEach(product => {
-            const card = document.createElement('div');
-            card.className = 'col';
-            card.innerHTML = `
-                <div class="card product-card">
-                    <img src="${product.imageUrl || 'https://via.placeholder.com/300x200'}" class="card-img-top" alt="${product.name}">
-                    <div class="card-body">
-                        <h5 class="card-title">${product.name}</h5>
-                        <p class="card-text">¥${product.price.toLocaleString()}</p>
-                        <button class="btn btn-gold view-product" data-id="${product.productId}">詳細を見る</button>
+            const productCard = `
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 product-card" data-id="${product.productId}">
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/300x200'}" class="card-img-top" alt="${product.name}">
+                        <div class="card-body">
+                            <h5 class="card-title">${product.name}</h5>
+                            <p class="card-text">¥${product.price.toLocaleString()}</p>
+                        </div>
                     </div>
                 </div>
             `;
-            container.appendChild(card);
-            
-            // 詳細ボタンのイベント設定
-            card.querySelector('.view-product').addEventListener('click', function() {
-                fetchProductDetail(product.productId);
+            productsContainer.insertAdjacentHTML('beforeend', productCard);
+        });
+
+        // ★修正: カードクリックで商品詳細を表示するイベントは、displayProducts内で設定
+        productsContainer.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('click', function() {
+                fetchProductDetail(this.dataset.id);
             });
         });
+    }
+
+    // カテゴリをプルダウンに挿入する関数
+    async function populateCategories() {
+        if (!categorySelect) {
+            console.warn("カテゴリ選択要素 (ID: categorySelect) が見つかりませんでした。");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/categories`);
+            if (!response.ok) {
+                throw new Error(`カテゴリリストの取得に失敗しました: ${response.status} ${response.statusText}`);
+            }
+            
+            const categories = await response.json();
+
+            categorySelect.innerHTML = '<option value="">カテゴリを選択</option>';
+
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;      
+                option.textContent = category;  
+                categorySelect.appendChild(option);
+            });
+
+            // URLパラメータに基づいて初期選択を行う
+            const initialCategory = new URLSearchParams(window.location.search).get('category') || '';
+            if (initialCategory) {
+                const optionExists = Array.from(categorySelect.options).some(
+                    opt => opt.value === initialCategory
+                );
+                if (optionExists) {
+                    categorySelect.value = initialCategory;
+                } else {
+                    console.warn(`URLパラメータのカテゴリ "${initialCategory}" は有効なオプションではありません。`);
+                }
+            }
+
+        } catch (error) {
+            console.error('カテゴリの読み込みエラー:', error);
+        }
+    }
+
+    // 商品一覧を取得して表示する関数 (searchKeyword, selectedCategory, sortOrder を受け取るように修正)
+    async function fetchProducts(searchKeyword = '', selectedCategory = '', sortOrder = 'new') { 
+        try {
+            let url = `${API_BASE}/products`;
+            const params = new URLSearchParams();
+
+            if (searchKeyword.trim() !== '') {
+                params.append('keyword', searchKeyword.trim());
+            }
+            if (selectedCategory.trim() !== '') {
+                params.append('category', selectedCategory.trim());
+            }
+            if (sortOrder && sortOrder !== 'new') { // 'new'はデフォルトなので除外
+                params.append('sort', sortOrder);
+            }
+
+            if (params.toString()) {
+                url += `?${params.toString()}`;
+            }
+            
+            const response = await fetch(url);
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ message: response.statusText }));
+                throw new Error(`商品の取得に失敗しました: ${errorData.message || response.statusText}`);
+            }
+            const products = await response.json();
+            displayProducts(products); // displayProducts はこの時点で定義済み
+
+            // 検索結果がない場合の表示はdisplayProductsで処理されるため、重複を避ける
+            // if (products.length === 0) { ... } この部分はdisplayProducts関数内に移動済み
+        } catch (error) {
+            console.error('Error in fetchProducts:', error);
+            alert(`商品の読み込みに失敗しました: ${error.message}`);
+        }
     }
     
     // 商品詳細を取得する関数
@@ -322,7 +277,7 @@ categorySelect.addEventListener('keypress', function (event) {
                         <td>¥${item.price.toLocaleString()}</td>
                         <td>
                             <input type="number" class="form-control form-control-sm update-quantity" 
-                                   data-id="${item.id}" value="${item.quantity}" min="1" style="width: 70px">
+                                       data-id="${item.id}" value="${item.quantity}" min="1" style="width: 70px">
                         </td>
                         <td>¥${item.subtotal.toLocaleString()}</td>
                         <td>
@@ -473,19 +428,69 @@ categorySelect.addEventListener('keypress', function (event) {
             <p>お客様のメールアドレスに注文確認メールをお送りしました。</p>
         `;
     }
-});
-// 数量入力が在庫を超えた場合に自動修正
-document.addEventListener('change', function (e) {
-    if (e.target.id === 'quantity') {
-        const input = e.target;
-        const max = parseInt(input.max, 10);
-        const value = parseInt(input.value, 10);
 
-        if (isNaN(value) || value < 1) {
-            input.value = 1;
-        } else if (value > max) {
-            input.value = max;
-        }
+    // --- イベントリスナーの初期化 ---
+
+    // 検索ボタンクリック時のイベントリスナー
+    if (searchButton) {
+        searchButton.addEventListener('click', function() {
+            const filters = getCurrentFilters();
+            fetchProducts(filters.keyword, filters.category, filters.sort);
+        });
     }
-});
 
+    // 検索入力欄でEnterキーを押した時のイベントリスナー
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); 
+                const filters = getCurrentFilters();
+                fetchProducts(filters.keyword, filters.category, filters.sort);
+            }
+        });
+    }
+
+    // カテゴリセレクトボックスの値が変わった時のイベントリスナー 
+    if (categorySelect) {
+        categorySelect.addEventListener('change', function() {
+            const filters = getCurrentFilters();
+            fetchProducts(filters.keyword, filters.category, filters.sort);
+        });
+    }
+
+    // ソートセレクトボックスの値が変わった時のイベントリスナー
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+            const filters = getCurrentFilters();
+            fetchProducts(filters.keyword, filters.category, filters.sort);
+        });
+    }
+    
+    // カートボタンクリックイベント
+    document.getElementById('cart-btn').addEventListener('click', function() {
+        updateCartModalContent();
+        cartModal.show();
+    });
+    
+    // 注文手続きボタンクリックイベント
+    document.getElementById('checkout-btn').addEventListener('click', function() {
+        cartModal.hide();
+        checkoutModal.show();
+    });
+    
+    // 注文確定ボタンクリックイベント
+    document.getElementById('confirm-order-btn').addEventListener('click', function() {
+        submitOrder();
+    });
+    
+    // --- 初期ロード処理 ---
+
+    // カテゴリをロードし、その後初期の商品一覧もロードする
+    populateCategories().then(() => {
+        const initialFilters = getCurrentFilters();
+        fetchProducts(initialFilters.keyword, initialFilters.category, initialFilters.sort);
+    });
+    
+    // カート情報の初期表示
+    updateCartDisplay();
+});
