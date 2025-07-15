@@ -21,7 +21,7 @@ public class ProductController {
 
     // 商品一覧の検索、フィルタリング、ソートを全てこのエンドポイントで処理
     // 指定なしで全商品取得
-    @GetMapping // GET /api/products?keyword=...&category=...&sort=...
+    @GetMapping 
     public ResponseEntity<List<ProductListItem>> getFilteredAndSortedProducts(
             @RequestParam(required = false) String keyword,  // キーワード検索
             @RequestParam(required = false) String category, // カテゴリー検索
