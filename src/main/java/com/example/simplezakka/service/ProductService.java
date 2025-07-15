@@ -8,6 +8,7 @@ import com.example.simplezakka.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,31 +49,61 @@ public class ProductService {
 
    
     /**
-     * 商品名で部分一致検索を行うサービスメソッド。
-     * キーワードがnullまたは空文字の場合は、すべての商品を返す。
+     * 検索キーワード、カテゴリ、ソート条件に基づいて商品をフィルタリング・ソートして取得する。
      *
-     * @param keyword 検索キーワード
-     * @return 検索条件に合致する商品のリスト（ProductListItem形式）
+     * @param keyword  検索キーワード（商品名）
+     * @param category カテゴリ名
+     * @param sort     ソート条件（"new", "price_asc", "price_desc", "name"など）
+     * @return フィルタリング・ソートされた商品のリスト（ProductListItem形式）
      */
-    public List<ProductListItem> searchProductsByName(String keyword) {
-        // キーワードがnullまたは空文字の場合のハンドリング
-        if (keyword == null || keyword.trim().isEmpty()) {
-            // 例：キーワードがない場合は全件表示
-            return findAllProducts();
-        }
-        // ProductRepositoryのfindByNameContainingIgnoreCaseメソッドを呼び出し、
-        // その結果をProductListItemのリストに変換して返す
-        return productRepository.findByNameContainingIgnoreCase(keyword.trim()).stream()
-                .map(this::convertToListItem)
-                .collect(Collectors.toList());
-    }
+    public List<ProductListItem> getFilteredAndSortedProducts(String keyword, String category, String sort) {
+        List<Product> products;
 
-    // カテゴリ検索メソッド
-    public List<ProductListItem> searchProductsByCategory(String keyword) {
-                
-        // ProductRepositoryのfindByNameContainingIgnoreCaseメソッドを呼び出し、
-        // その結果をProductListItemのリストに変換して返す
-        return productRepository.findByCategory(keyword.trim()).stream()
+        // 1. フィルタリング処理
+        if ((keyword != null && !keyword.trim().isEmpty()) && (category != null && !category.trim().isEmpty())) {
+            // キーワードとカテゴリの両方で検索
+            // ProductRepository に findByNameContainingIgnoreCaseAndCategory というメソッドが必要になります。
+            // もし直接ない場合は、以下のように findAll() からフィルタリングすることも可能ですが、効率は落ちます。
+            products = productRepository.findByNameContainingIgnoreCaseAndCategory(keyword.trim(), category.trim());
+        } else if (keyword != null && !keyword.trim().isEmpty()) {
+            // キーワードのみで検索
+            products = productRepository.findByNameContainingIgnoreCase(keyword.trim());
+        } else if (category != null && !category.trim().isEmpty()) {
+            // カテゴリのみで検索
+            products = productRepository.findByCategory(category.trim());
+        } else {
+            // フィルタ条件が指定されない場合はすべての商品を取得
+            products = productRepository.findAll();
+        }
+
+        // 2. ソート処理
+        // Product エンティティに createdAt フィールド (LocalDateTime や Date 型) があることを前提としています。
+        // もし存在しない場合は、Product エンティティとデータベーススキーマを更新してください。
+        Comparator<Product> comparator = null;
+        switch (sort) {
+            case "price_asc":
+                comparator = Comparator.comparing(Product::getPrice);
+                break;
+            case "price_desc":
+                comparator = Comparator.comparing(Product::getPrice).reversed();
+                break;
+            case "name":
+                comparator = Comparator.comparing(Product::getName, String.CASE_INSENSITIVE_ORDER); // 大文字小文字を区別しないソート
+                break;
+            case "new":
+            default:
+                // 最新順 (createdAt の降順)
+                // Product エンティティに getCreatedAt() メソッドが必要です。
+                comparator = Comparator.comparing(Product::getCreatedAt).reversed();
+                break;
+        }
+
+        if (comparator != null) {
+            products.sort(comparator);
+        }
+
+        // 3. ProductListItem DTOへの変換
+        return products.stream()
                 .map(this::convertToListItem)
                 .collect(Collectors.toList());
     }
