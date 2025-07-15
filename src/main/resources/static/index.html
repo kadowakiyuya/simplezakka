@@ -35,25 +35,24 @@
 </div>
  
         <!-- カテゴリ選択 -->
-<form method="get" onsubmit="return redirectToCategory()" class="mb-2">
-<div class="input-group">
-<select id="categorySelect" class="form-select">
- <option value="">カテゴリを選択</option>
-</select>
-<button class="btn btn-outline-light" type="submit">移動</button>
+<div class="mb-2">
+  <select id="categorySelect" class="form-select w-100">
+    <option value="">カテゴリを選択</option>
+  </select>
 </div>
-</form>
+
  
         <!-- ソートセレクト -->
 <div class="input-group">
-<select name="sort" id="sortExe" class="form-select">
-<option value="new">新着順</option>
-<option value="price_asc">価格が安い順</option>
-<option value="price_desc">価格が高い順</option>
-<option value="name">商品名順</option>
-</select>
+  <select name="sort" id="sortExe" class="form-select">
+    <option value="">並び順</option>
+    <option value="new">新着順</option>
+    <option value="price_asc">価格が安い順</option>
+    <option value="price_desc">価格が高い順</option>
+    <option value="name">商品名順</option>
+  </select>
 </div>
-</div>
+
  
       <!-- 右：カートボタン -->
 <div class="d-flex flex-column align-items-end">
