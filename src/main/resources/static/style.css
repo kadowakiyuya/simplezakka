@@ -8,11 +8,6 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.cart-badge {
-    position: relative;
-    top: -8px;
-    right: 5px;
-}
 body {
     background-color: #f5f5f5; 
 }
