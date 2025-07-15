@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="card-body">
                             <h5 class="card-title">${product.name}</h5>
                             <p class="card-text">¥${product.price.toLocaleString()}</p>
+                            <button class="btn btn-gold w-100 view-detail" data-id="${product.productId}">詳細を見る</button>
                         </div>
                     </div>
                 </div>
@@ -53,12 +54,13 @@ document.addEventListener('DOMContentLoaded', function() {
             productsContainer.insertAdjacentHTML('beforeend', productCard);
         });
 
-        // ★修正: カードクリックで商品詳細を表示するイベントは、displayProducts内で設定
-        productsContainer.querySelectorAll('.product-card').forEach(card => {
-            card.addEventListener('click', function() {
-                fetchProductDetail(this.dataset.id);
-            });
-        });
+productsContainer.querySelectorAll('.view-detail').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.stopPropagation(); // カードクリックのイベントをキャンセル
+        fetchProductDetail(this.dataset.id);
+    });
+});
+
     }
 
     // カテゴリをプルダウンに挿入する関数
