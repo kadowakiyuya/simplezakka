@@ -22,19 +22,7 @@ public class ProductService {
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
-    public List<ProductListItem> getSortedProducts(String sort) {
-    switch (sort) {
-        case "price_asc":
-            return productRepository.findAllOrderByPriceAsc();
-        case "price_desc":
-            return productRepository.findAllOrderByPriceDesc();
-        case "name":
-            return productRepository.findAllOrderByName();
-        case "new":
-        default:
-            return productRepository.findAllOrderByCreatedAtDesc();
-    }
-    }
+
 
 
 
