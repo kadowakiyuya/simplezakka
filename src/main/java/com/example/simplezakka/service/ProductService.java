@@ -89,7 +89,6 @@ public class ProductService {
             case "new":
             default:
                 // 最新順 (createdAt の降順)
-                // Product エンティティに getCreatedAt() メソッドが必要です。
                 comparator = Comparator.comparing(Product::getCreatedAt).reversed();
                 break;
         }
