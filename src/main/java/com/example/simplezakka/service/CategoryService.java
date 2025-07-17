@@ -36,6 +36,7 @@ public class CategoryService {
 
         Set<String> uniqueCategoryNames = products.stream()
                 .map(Product::getCategory) // Productからカテゴリ名を取得
+                .filter(category -> category != null)
                 .collect(Collectors.toSet()); // 重複を排除
 
         // SetからList<String>に変換して返す
