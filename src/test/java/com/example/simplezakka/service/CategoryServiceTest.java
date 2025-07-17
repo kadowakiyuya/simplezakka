@@ -28,7 +28,7 @@ public class CategoryServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    // ① 通常ケース：カテゴリの重複排除 + アルファベット順ソート
+    // 通常ケース：カテゴリの重複排除 + アルファベット順ソート
     @Test
     void getAllUniqueCategoryNames_ShouldReturnUniqueCategoryNamesList() {
         Product p1 = new Product();
@@ -56,7 +56,7 @@ public class CategoryServiceTest {
         verify(productRepository, times(1)).findAll();
     }
 
-    // ② 境界値ケース：商品が1つもない場合
+    // 境界値ケース：商品が1つもない場合
     @Test
     void getAllUniqueCategoryNames_WhenRepositoryReturnsEmptyList_ShouldReturnEmptyList() {
         when(productRepository.findAll()).thenReturn(Collections.emptyList());
@@ -67,7 +67,7 @@ public class CategoryServiceTest {
         verify(productRepository, times(1)).findAll();
     }
 
-    // ③ nullカテゴリを含む商品リストの場合
+    // nullカテゴリを含む商品リストの場合
     @Test
     void getAllUniqueCategoryNames_WhenProductHasNullCategory_ShouldExcludeNull() {
         Product p1 = new Product();
