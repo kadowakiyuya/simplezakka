@@ -24,23 +24,13 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     // カテゴリ名での完全一致検索メソッド
     List<Product> findByCategory(String categoryName);
-    // カテゴリ名での完全一致検索メソッドここまで
-
+    
+    //商品名での部分一致及びカテゴリ名での完全一致検索メソッド
     List<Product> findByNameContainingIgnoreCaseAndCategory(String name, String category);
 
     @Modifying
     @Query("UPDATE Product p SET p.stock = p.stock - ?2 WHERE p.productId = ?1 AND p.stock >= ?2")
     int decreaseStock(Integer productId, Integer quantity);
-    @Query("SELECT new com.example.simplezakka.dto.product.ProductListItem(p.productId, p.name, p.price, p.imageUrl) FROM Product p ORDER BY p.createdAt DESC")
-    List<ProductListItem> findAllOrderByCreatedAtDesc();
- 
-    @Query("SELECT new com.example.simplezakka.dto.product.ProductListItem(p.productId, p.name, p.price, p.imageUrl) FROM Product p ORDER BY p.price ASC")
-    List<ProductListItem> findAllOrderByPriceAsc();
-
-    @Query("SELECT new com.example.simplezakka.dto.product.ProductListItem(p.productId, p.name, p.price, p.imageUrl) FROM Product p ORDER BY p.price DESC")
-    List<ProductListItem> findAllOrderByPriceDesc();
-
-    @Query("SELECT new com.example.simplezakka.dto.product.ProductListItem(p.productId, p.name, p.price, p.imageUrl) FROM Product p ORDER BY p.name ASC")
-    List<ProductListItem> findAllOrderByName();
+   
 
 }
