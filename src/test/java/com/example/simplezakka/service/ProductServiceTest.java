@@ -39,6 +39,7 @@ class ProductServiceTest {
         product1 = new Product();
         product1.setProductId(1);
         product1.setName("商品1");
+        product1.setCategory("インテリア");
         product1.setPrice(100);
         product1.setImageUrl("/img1.png");
         product1.setDescription("説明1");
@@ -48,6 +49,7 @@ class ProductServiceTest {
         product2 = new Product();
         product2.setProductId(2);
         product2.setName("商品2");
+        product1.setCategory("インテリア");
         product2.setPrice(200);
         product2.setImageUrl("/img2.png");
         product2.setDescription("説明2");
@@ -56,23 +58,24 @@ class ProductServiceTest {
         productWithNullFields = new Product();
         productWithNullFields.setProductId(3);
         productWithNullFields.setName("商品3（Nullあり）");
+        productWithNullFields.setCategory("インテリア");
         productWithNullFields.setPrice(300);
         productWithNullFields.setStock(8);
         productWithNullFields.setDescription(null); // descriptionがnull
         productWithNullFields.setImageUrl(null);    // imageUrlがnull
     }
 
-    // === findAllProducts のテスト ===
+    // === getFilteredAndSortedProducts(All) のテスト ===
 
     @Test
-    @DisplayName("findAllProducts: リポジトリから複数の商品が返される場合、ProductListItemのリストを返す")
-    void findAllProducts_ShouldReturnListOfProductListItems() {
+    @DisplayName("getFilteredAndSortedProducts(All): リポジトリから複数の商品が返される場合、ProductListItemのリストを返す")
+    void getFilteredAndSortedProducts_ShouldReturnListOfProductListItems() {
         // Arrange: モックの設定
         List<Product> productsFromRepo = Arrays.asList(product1, product2);
         when(productRepository.findAll()).thenReturn(productsFromRepo);
 
         // Act: テスト対象メソッドの実行
-        List<ProductListItem> result = productService.findAllProducts();
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, null, null);
 
         // Assert: 結果の検証
         assertThat(result).hasSize(2);
@@ -90,13 +93,13 @@ class ProductServiceTest {
     }
 
     @Test
-    @DisplayName("findAllProducts: リポジトリから空のリストが返される場合、空のリストを返す")
-    void findAllProducts_WhenRepositoryReturnsEmptyList_ShouldReturnEmptyList() {
+    @DisplayName("getFilteredAndSortedProducts(All): リポジトリから空のリストが返される場合、空のリストを返す")
+    void getFilteredAndSortedProducts() {
         // Arrange
         when(productRepository.findAll()).thenReturn(Collections.emptyList());
 
         // Act
-        List<ProductListItem> result = productService.findAllProducts();
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts("ABC", null, null);
 
         // Assert
         assertThat(result).isEmpty();
@@ -107,14 +110,14 @@ class ProductServiceTest {
     }
 
     @Test
-    @DisplayName("findAllProducts: 商品エンティティにnullフィールドが含まれる場合、DTOにもnullがマッピングされる")
-    void findAllProducts_WhenProductHasNullFields_ShouldMapNullToDto() {
+    @DisplayName("getFilteredAndSortedProducts(All): 商品エンティティにnullフィールドが含まれる場合、DTOにもnullがマッピングされる")
+    void getFilteredAndSortedProducts_WhenProductHasNullFields_ShouldMapNullToDto() {
         // Arrange
         List<Product> productsFromRepo = List.of(productWithNullFields);
         when(productRepository.findAll()).thenReturn(productsFromRepo);
 
         // Act
-        List<ProductListItem> result = productService.findAllProducts();
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, null, null);
 
         // Assert
         assertThat(result).hasSize(1);
@@ -225,4 +228,72 @@ class ProductServiceTest {
         verify(productRepository, times(1)).findById(nullProductId);
         verifyNoMoreInteractions(productRepository);
     }
+
+
+// === getFilteredAndSortedProducts(keyword) のテスト ===
+
+    @Test
+    @DisplayName("getFilteredAndSortedProducts(keyword): リポジトリから条件に合った商品が返される場合、ProductListItemのリストを返す")
+    void getFilteredAndSortedProducts_ShouldReturnListOfProductListItem() {
+        // Arrange: モックの設定
+        List<Product> productsFromRepo = Arrays.asList(product1, product2);
+        when(productRepository.findAll()).thenReturn(productsFromRepo);
+
+        // Act: テスト対象メソッドの実行
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts("木製", null, null);
+
+        // Assert: 結果の検証
+        assertThat(result).hasSize(2);
+        // 各要素の全フィールドが正しくマッピングされているか検証 (tupleを使うと便利)
+        assertThat(result)
+            .extracting(ProductListItem::getProductId, ProductListItem::getName, ProductListItem::getPrice, ProductListItem::getImageUrl)
+            .containsExactlyInAnyOrder(
+                tuple(product1.getProductId(), product1.getName(), product1.getPrice(), product1.getImageUrl()),
+                tuple(product2.getProductId(), product2.getName(), product2.getPrice(), product2.getImageUrl())
+            );
+
+        // Verify: メソッド呼び出し検証
+        verify(productRepository, times(1)).findAll();
+        verifyNoMoreInteractions(productRepository); // 他のメソッドが呼ばれていないこと
+    }
+
+    @Test
+    @DisplayName("getFilteredAndSortedProducts(keyword): リポジトリから空のリストが返される場合、空のリストを返す")
+    void getFilteredAndSortedProducts_WhenRepositoryReturnsEmptyList_ShouldReturnEmptyList() {
+        // Arrange
+        when(productRepository.findAll()).thenReturn(Collections.emptyList());
+
+        // Act
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts("ABC", null, null);
+
+        // Assert
+        assertThat(result).isEmpty();
+
+        // Verify
+        verify(productRepository, times(1)).findAll();
+        verifyNoMoreInteractions(productRepository);
+    }
+
+    @Test
+    @DisplayName("getFilteredAndSortedProducts(keyword): 商品エンティティにnullフィールドが含まれる場合、DTOにもnullがマッピングされる")
+    void getFilteredAndSortedProducts_WhenProductHasNullFields_ShouldMapNullToDt() {
+        // Arrange
+        List<Product> productsFromRepo = List.of(productWithNullFields);
+        when(productRepository.findAll()).thenReturn(productsFromRepo);
+
+        // Act
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, null, null);
+
+        // Assert
+        assertThat(result).hasSize(1);
+        ProductListItem dto = result.get(0);
+        assertThat(dto.getProductId()).isEqualTo(productWithNullFields.getProductId());
+        assertThat(dto.getName()).isEqualTo(productWithNullFields.getName());
+        assertThat(dto.getPrice()).isEqualTo(productWithNullFields.getPrice());
+        assertThat(dto.getImageUrl()).isNull(); // imageUrlがnullであることを確認
+
+        // Verify
+        verify(productRepository, times(1)).findAll();
+        verifyNoMoreInteractions(productRepository);
+    } 
 }
