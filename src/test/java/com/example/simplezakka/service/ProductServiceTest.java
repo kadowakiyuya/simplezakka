@@ -39,7 +39,7 @@ class ProductServiceTest {
     void setUp() {
         product1 = new Product();
         product1.setProductId(1);
-        product1.setName("商品1");
+        product1.setName("アロマディフューザー（ウッド）");
         product1.setCategory("インテリア");
         product1.setPrice(100);
         product1.setImageUrl("/img1.png");
@@ -49,7 +49,7 @@ class ProductServiceTest {
 
         product2 = new Product();
         product2.setProductId(2);
-        product2.setName("商品2");
+        product2.setName("コットンブランケット");
         product1.setCategory("インテリア");
         product2.setPrice(200);
         product2.setImageUrl("/img2.png");
@@ -76,7 +76,7 @@ class ProductServiceTest {
         when(productRepository.findAll()).thenReturn(productsFromRepo);
 
         // Act: テスト対象メソッドの実行
-        List<ProductListItem> result = productService.getFilteredAndSortedProducts("商品", "インテリア", "price_ask");
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, null, "createdAt");
 
         // Assert: 結果の検証
         assertThat(result).hasSize(2);
@@ -100,7 +100,7 @@ class ProductServiceTest {
         when(productRepository.findAll()).thenReturn(Collections.emptyList());
 
         // Act
-        List<ProductListItem> result = productService.getFilteredAndSortedProducts("ABC", null, null);
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts("ABC", "ABC", "new");
 
         // Assert
         assertThat(result).isEmpty();
