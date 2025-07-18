@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest // JPAリポジトリテストに特化した設定
-public class ProductRepositoryTest {
+class ProductRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager; // テストデータの準備や永続化の検証に使用
@@ -30,9 +30,10 @@ public class ProductRepositoryTest {
     private Product product2;
 
     // テストデータ準備用のヘルパーメソッド
-    private Product createProduct(String name, int price, int stock) {
+    private Product createProduct(String name, int price, int stock, String category) {
         Product product = new Product();
         product.setName(name);
+        product.setCategory(category);
         product.setPrice(price);
         product.setStock(stock);
         product.setDescription(name + "の説明です。");
@@ -44,8 +45,8 @@ public class ProductRepositoryTest {
     @BeforeEach
     void setUp() {
         // 各テストメソッド実行前に共通のデータを準備
-        product1 = createProduct("商品A", 1000, 10);
-        product2 = createProduct("商品B", 2000, 5);
+        product1 = createProduct("商品A", 1000, 10, "インテリア");
+        product2 = createProduct("商品B", 2000, 5, "インテリア");
         entityManager.persist(product1); // TestEntityManagerで永続化
         entityManager.persist(product2);
         entityManager.flush(); // DBに即時反映
@@ -56,7 +57,7 @@ public class ProductRepositoryTest {
     @DisplayName("商品を正常に保存し、IDで検索できる")
     void saveAndFindById_Success() {
         // Arrange
-        Product newProduct = createProduct("新商品C", 3000, 20);
+        Product newProduct = createProduct("新商品C", 3000, 20,"インテリア");
 
         // Act
         Product savedProduct = productRepository.save(newProduct); // リポジトリ経由で保存
@@ -110,7 +111,7 @@ public class ProductRepositoryTest {
         // Arrange: setUpで2件の商品が保存されている
 
         // Act
-        List<Product> products = productRepository.findByNameContainingIgnoreCase("木製"); // 全件取得
+        List<Product> products = productRepository.findByNameContainingIgnoreCase("商品"); // 全件取得
 
         // Assert
         assertThat(products).hasSize(2); // 件数が正しいか
@@ -153,7 +154,7 @@ public class ProductRepositoryTest {
         // Arrange: setUpで2件の商品が保存されている
 
         // Act
-        List<Product> products = productRepository.findByNameContainingIgnoreCaseAndCategory("木製","インテリア"); // 全件取得
+        List<Product> products = productRepository.findByNameContainingIgnoreCaseAndCategory("商品","インテリア"); // 全件取得
 
         // Assert
         assertThat(products).hasSize(2); // 件数が正しいか
@@ -412,7 +413,7 @@ public class ProductRepositoryTest {
     @DisplayName("必須項目(price)がnullで保存しようとすると例外発生")
     void saveProduct_WithNullPrice_ShouldThrowException() {
         // Arrange
-        Product product = createProduct("価格Null商品", 0, 1); // 一旦ダミーで作成
+        Product product = createProduct("価格Null商品", 0, 1,""); // 一旦ダミーで作成
         product.setPrice(null); // 価格をnullに
 
         // Act & Assert
@@ -428,7 +429,7 @@ public class ProductRepositoryTest {
     @DisplayName("必須項目(stock)がnullで保存しようとすると例外発生")
     void saveProduct_WithNullStock_ShouldThrowException() {
         // Arrange
-        Product product = createProduct("在庫Null商品", 500, 0); // 一旦ダミーで作成
+        Product product = createProduct("在庫Null商品", 500, 0,""); // 一旦ダミーで作成
         product.setStock(null); // 在庫をnullに
 
         // Act & Assert
