@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -75,7 +76,7 @@ class ProductServiceTest {
         when(productRepository.findAll()).thenReturn(productsFromRepo);
 
         // Act: テスト対象メソッドの実行
-        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, null, null);
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts("商品", "インテリア", "price_asc");
 
         // Assert: 結果の検証
         assertThat(result).hasSize(2);
