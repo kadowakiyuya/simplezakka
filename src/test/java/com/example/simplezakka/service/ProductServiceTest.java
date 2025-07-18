@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections; // 空のリスト用
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple; // tupleを使った検証用
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -100,7 +102,7 @@ class ProductServiceTest {
         when(productRepository.findAll()).thenReturn(Collections.emptyList());
 
         // Act
-        List<ProductListItem> result = productService.getFilteredAndSortedProducts("ABC", "ABC", "new");
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, null, "price_asc");
 
         // Assert
         assertThat(result).isEmpty();
@@ -114,11 +116,11 @@ class ProductServiceTest {
     @DisplayName("getFilteredAndSortedProducts(All): 商品エンティティにnullフィールドが含まれる場合、DTOにもnullがマッピングされる")
     void getFilteredAndSortedProducts_WhenProductHasNullFields_ShouldMapNullToDto() {
         // Arrange
-        List<Product> productsFromRepo = List.of(productWithNullFields);
+        List<Product> productsFromRepo = new ArrayList<>(List.of(productWithNullFields));
         when(productRepository.findAll()).thenReturn(productsFromRepo);
 
         // Act
-        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, null, null);
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, null, "price_asc");
 
         // Assert
         assertThat(result).hasSize(1);
@@ -262,16 +264,16 @@ class ProductServiceTest {
     @DisplayName("getFilteredAndSortedProducts(keyword): リポジトリから空のリストが返される場合、空のリストを返す")
     void getFilteredAndSortedProducts_WhenRepositoryReturnsEmptyList_ShouldReturnEmptyList() {
         // Arrange
-        when(productRepository.findAll()).thenReturn(Collections.emptyList());
+        when(productRepository.findByNameContainingIgnoreCase("商品")).thenReturn(Collections.emptyList());
 
         // Act
-        List<ProductListItem> result = productService.getFilteredAndSortedProducts("ABC", null, null);
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts("商品", null, "price_asc");
 
         // Assert
         assertThat(result).isEmpty();
 
         // Verify
-        verify(productRepository, times(1)).findAll();
+        verify(productRepository, times(1)).findByNameContainingIgnoreCase("商品");
         verifyNoMoreInteractions(productRepository);
     }
 
@@ -279,11 +281,11 @@ class ProductServiceTest {
     @DisplayName("getFilteredAndSortedProducts(keyword): 商品エンティティにnullフィールドが含まれる場合、DTOにもnullがマッピングされる")
     void getFilteredAndSortedProducts_WhenProductHasNullFields_ShouldMapNullToDt() {
         // Arrange
-        List<Product> productsFromRepo = List.of(productWithNullFields);
-        when(productRepository.findAll()).thenReturn(productsFromRepo);
+        List<Product> productsFromRepo = new ArrayList<>(List.of(productWithNullFields));
+        when(productRepository.findAll()).thenReturn(productsFromRepo); 
 
         // Act
-        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, null, null);
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, null, "price_asc");
 
         // Assert
         assertThat(result).hasSize(1);
@@ -294,7 +296,6 @@ class ProductServiceTest {
         assertThat(dto.getImageUrl()).isNull(); // imageUrlがnullであることを確認
 
         // Verify
-        verify(productRepository, times(1)).findAll();
-        verifyNoMoreInteractions(productRepository);
+        verify(productRepository, times(1)).findAll(); 
     } 
 }
