@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest // JPAリポジトリテストに特化した設定
-class ProductRepositoryTest {
+public class ProductRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager; // テストデータの準備や永続化の検証に使用
