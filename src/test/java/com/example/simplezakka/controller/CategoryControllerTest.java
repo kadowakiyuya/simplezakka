@@ -1,24 +1,16 @@
 package com.example.simplezakka.controller;
 
-import com.example.simplezakka.dto.product.ProductDetail;
-import com.example.simplezakka.dto.product.ProductListItem;
-import com.example.simplezakka.service.ProductService;
 import com.example.simplezakka.service.CategoryService; 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 import java.util.Collections; // 空リスト用
-import java.util.List;
 
-import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
