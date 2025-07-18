@@ -39,7 +39,7 @@ class ProductServiceTest {
     void setUp() {
         product1 = new Product();
         product1.setProductId(1);
-        product1.setName("アロマディフューザー（ウッド）");
+        product1.setName("商品1");
         product1.setCategory("インテリア");
         product1.setPrice(100);
         product1.setImageUrl("/img1.png");
@@ -49,7 +49,7 @@ class ProductServiceTest {
 
         product2 = new Product();
         product2.setProductId(2);
-        product2.setName("コットンブランケット");
+        product2.setName("商品2");
         product1.setCategory("インテリア");
         product2.setPrice(200);
         product2.setImageUrl("/img2.png");
@@ -76,7 +76,7 @@ class ProductServiceTest {
         when(productRepository.findAll()).thenReturn(productsFromRepo);
 
         // Act: テスト対象メソッドの実行
-        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, null, "createdAt");
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, null, "price_asc");
 
         // Assert: 結果の検証
         assertThat(result).hasSize(2);
@@ -238,10 +238,10 @@ class ProductServiceTest {
     void getFilteredAndSortedProducts_ShouldReturnListOfProductListItem() {
         // Arrange: モックの設定
         List<Product> productsFromRepo = Arrays.asList(product1, product2);
-        when(productRepository.findAll()).thenReturn(productsFromRepo);
+        when(productRepository.findByNameContainingIgnoreCase("商品")).thenReturn(productsFromRepo);
 
         // Act: テスト対象メソッドの実行
-        List<ProductListItem> result = productService.getFilteredAndSortedProducts("木製", null, null);
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts("商品", "", "price_asc");
 
         // Assert: 結果の検証
         assertThat(result).hasSize(2);
@@ -254,7 +254,7 @@ class ProductServiceTest {
             );
 
         // Verify: メソッド呼び出し検証
-        verify(productRepository, times(1)).findAll();
+        verify(productRepository, times(1)).findByNameContainingIgnoreCase("商品");
         verifyNoMoreInteractions(productRepository); // 他のメソッドが呼ばれていないこと
     }
 
