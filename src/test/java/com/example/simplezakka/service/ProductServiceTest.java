@@ -75,7 +75,7 @@ class ProductServiceTest {
         when(productRepository.findAll()).thenReturn(productsFromRepo);
 
         // Act: テスト対象メソッドの実行
-        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, null, null);
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts("商品", "インテリア", "price_ask");
 
         // Assert: 結果の検証
         assertThat(result).hasSize(2);
