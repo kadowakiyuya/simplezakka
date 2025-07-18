@@ -229,6 +229,55 @@ class ProductServiceTest {
         verify(productRepository, times(1)).findById(nullProductId);
         verifyNoMoreInteractions(productRepository);
     }
+       //=== getFilteredAndSortedProducts(keyword & category) のテスト ===
+    
+    @Test
+    @DisplayName("getFilteredAndSortedProducts(keyword & category): リポジトリから複数の商品が返される場合、ProductListItemのリストを返す")
+    void getFilteredAndSortedProduct(){
+        // Arrange: モックの設定
+        List<Product> productsFromRepo = Arrays.asList(product1, product2);
+        when(productRepository.findByNameContainingIgnoreCaseAndCategory("商品", "インテリア")).thenReturn(productsFromRepo);
+ 
+        // Act: テスト対象メソッドの実行
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts("商品", "インテリア", "price_asc");
+ 
+        // Assert: 結果の検証
+        assertThat(result).hasSize(2);
+        // 各要素の全フィールドが正しくマッピングされているか検証 (tupleを使うと便利)
+        assertThat(result)
+            .extracting(item -> tuple(
+                item.getProductId(),
+                item.getName(),
+                item.getPrice(),
+                item.getImageUrl()
+    ))
+            .containsExactlyInAnyOrder(
+                tuple(product1.getProductId(), product1.getName(), product1.getPrice(), product1.getImageUrl()),
+                tuple(product2.getProductId(), product2.getName(), product2.getPrice(), product2.getImageUrl())
+            );
+ 
+        // Verify: メソッド呼び出し検証
+        verify(productRepository, times(1)).findByNameContainingIgnoreCaseAndCategory("商品","インテリア");
+        verifyNoMoreInteractions(productRepository); // 他のメソッドが呼ばれていないこと
+    }
+
+
+    @Test
+    @DisplayName("getFilteredAndSortedProducts(keyword & category): リポジトリから空のリストが返される場合、空のリストを返す")
+    void getFilteredAndSortedProducts_ShouldReturnListOfProducListItems(){
+        // Arrange
+        when(productRepository.findByNameContainingIgnoreCaseAndCategory("ABC", "ABC")).thenReturn(Collections.emptyList());
+ 
+        // Act
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts("ABC", "ABC", "new");
+ 
+        // Assert
+        assertThat(result).isEmpty();
+ 
+        // Verify
+        verify(productRepository, times(1)).findByNameContainingIgnoreCaseAndCategory("ABC", "ABC");
+        verifyNoMoreInteractions(productRepository);
+    }
 
 
 // === getFilteredAndSortedProducts(keyword) のテスト ===
