@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections; // 空リスト用
 import java.util.List;
@@ -42,9 +43,9 @@ class ProductControllerTest {
     @BeforeEach
     void setUp() {
         // --- テストデータ準備 ---
-        productListItem1 = new ProductListItem(1, "リスト商品1", 100, "/list1.png");
-        productListItem2 = new ProductListItem(2, "リスト商品2", 200, "/list2.png");
-        productListItem3 = new ProductListItem(3, "リスト商品3", 300, "/list3.png");
+        productListItem1 = new ProductListItem(1, "リスト商品1", 100, null, "/list1.png");
+        productListItem2 = new ProductListItem(2, "リスト商品2", 200, null, "/list2.png");
+        productListItem3 = new ProductListItem(3, "リスト商品3", 300, null, "/list3.png");
 
         productDetail1 = new ProductDetail(1, "詳細商品1", 100, "詳細説明1",
                                            "木材", "家具", 10, "/detail1.png");
