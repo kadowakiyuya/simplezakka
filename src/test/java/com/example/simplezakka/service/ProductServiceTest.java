@@ -318,7 +318,7 @@ void getFilteredAndSortedProducts_WithKeywordAndNullFields_ShouldMapNullToDto() 
         when(productRepository.findByCategory(category.trim())).thenReturn(productsFromRepo);
  
         // Act
-        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, "インテリア", "price_asc");
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, "インテリア", "name");
  
         // Assert
         assertThat(result).hasSize(2);
@@ -344,7 +344,7 @@ void getFilteredAndSortedProducts_WithKeywordAndNullFields_ShouldMapNullToDto() 
         when(productRepository.findByCategory(category.trim())).thenReturn(Collections.emptyList());
  
         // Act
-        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, "インテリア", "new");
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, "インテリア", "name");
  
         // Assert
         assertThat(result).isEmpty();
@@ -363,7 +363,7 @@ void getFilteredAndSortedProducts_WithKeywordAndNullFields_ShouldMpNullToDto() {
     List<Product> productsFromRepo = new ArrayList<>(List.of(productWithNullFields));
     when(productRepository.findByCategory(category)).thenReturn(productsFromRepo);
     // Act
-    List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, "インテリア", "price_asc");
+    List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, "インテリア", "name");
 
     // Assert
     assertThat(result).hasSize(1);
@@ -512,7 +512,7 @@ void getFilteredAndSortedProducts_WitKeywordAndNullFields_ShouldMpNullToDto() {
     }
 
 
-//=== getFilteredAndSortedProducts(price_name) のテスト ===
+//=== getFilteredAndSortedProducts(name) のテスト ===
 
 @Test
     @DisplayName("getFilteredAndSortedProducts(sort name): リポジトリから複数の商品が返される場合、ProductListItemのリストを返す")
@@ -539,7 +539,7 @@ void getFilteredAndSortedProducts_WitKeywordAndNullFields_ShouldMpNullToDto() {
         verifyNoMoreInteractions(productRepository); // 他のメソッドが呼ばれていないこと
         }
     
-   //=== getFilteredAndSortedProducts(price_new) のテスト === 
+   //=== getFilteredAndSortedProducts(new) のテスト === 
 
    @Test
     @DisplayName("getFilteredAndSortedProducts(sort new): 引数として（sort new）が与えられ、リポジトリから複数の商品が返され場合、作成順に並べ替えられたProductListItemのリストを返す")
@@ -565,5 +565,63 @@ void getFilteredAndSortedProducts_WitKeywordAndNullFields_ShouldMpNullToDto() {
         verify(productRepository, times(1)).findAll();
         verifyNoMoreInteractions(productRepository); // 他のメソッドが呼ばれていないこと
     }
-}
 
+
+
+ //=== 複合検索　getFilteredAndSortedProducts(sort price_asc & keyword) のテスト === 
+
+
+@Test
+    @DisplayName("getFilteredAndSortedProducts(sort price_asc & keyword): リポジトリから条件に合った商品が返される場合、ProductListItemのリストを返す")
+    void getFilteredAndSortedProducts_ShouldReurnListOfProductListItem() {
+        // Arrange: モックの設定
+        List<Product> productsFromRepo = Arrays.asList(product1, product2);
+        when(productRepository.findByNameContainingIgnoreCase("商品")).thenReturn(productsFromRepo);
+
+        // Act: テスト対象メソッドの実行
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts("商品", null, "price_asc");
+
+        // Assert: 結果の検証
+        assertThat(result).hasSize(2);
+        // 各要素の全フィールドが正しくマッピングされているか検証 (tupleを使うと便利)
+        assertThat(result)
+            .extracting(ProductListItem::getProductId, ProductListItem::getName, ProductListItem::getPrice, ProductListItem::getImageUrl)
+            .containsExactly(
+                tuple(product1.getProductId(), product1.getName(), product1.getPrice(), product1.getImageUrl()),
+                tuple(product2.getProductId(), product2.getName(), product2.getPrice(), product2.getImageUrl())
+            );
+
+        // Verify: メソッド呼び出し検証
+        verify(productRepository, times(1)).findByNameContainingIgnoreCase("商品");
+        verifyNoMoreInteractions(productRepository); // 他のメソッドが呼ばれていないこと
+    }
+
+
+
+//=== 複合検索　getFilteredAndSortedProducts(sort name & category) のテスト === 
+
+@Test
+    @DisplayName("getFilteredAndSortedProducts(sort name & category): リポジトリから条件に合った商品が返される場合、ProductListItemのリストを返す")
+    void getFilteredAndSortedProducts_ShouldReurnListOfProductListItems_WithCategory() {
+        // Arrange
+        String category = "インテリア";
+        List<Product> productsFromRepo = Arrays.asList(product1, product2);
+        when(productRepository.findByCategory(category.trim())).thenReturn(productsFromRepo);
+ 
+        // Act
+        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, "インテリア", "name");
+ 
+        // Assert
+        assertThat(result).hasSize(2);
+        assertThat(result)
+            .extracting(ProductListItem::getProductId, ProductListItem::getName, ProductListItem::getPrice, ProductListItem::getImageUrl)
+            .containsExactly(
+                tuple(product1.getProductId(), product1.getName(), product1.getPrice(), product1.getImageUrl()),
+                tuple(product2.getProductId(), product2.getName(), product2.getPrice(), product2.getImageUrl())
+            );
+ 
+        // Verify
+        verify(productRepository, times(1)).findByCategory(category.trim());
+        verifyNoMoreInteractions(productRepository) ;
+    }
+}
