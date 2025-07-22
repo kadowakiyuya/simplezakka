@@ -31,7 +31,7 @@ public class ProductController {
     }
 
     // IDで商品詳細取得（JSON）
-    @GetMapping("/{productId:[0-9]+}")
+    @GetMapping("/{productId}")
     public ResponseEntity<ProductDetail> getProductById(@PathVariable Integer productId) {
         ProductDetail product = productService.findProductById(productId);
         if (product == null) {
