@@ -74,6 +74,9 @@ class ProductControllerTest {
             // Arrange: productService.getFilteredAndSortedProductsが全商品リストを返すようにモック設定
             // Act & Assert
             mockMvc.perform(get("/api/products")
+                            .param("keyword", "")
+                            .param("category", "")
+                            .param("sort", "new")
                             .accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk()) // ステータスコード200 OK
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // Content-TypeがJSON
@@ -104,6 +107,9 @@ class ProductControllerTest {
 
             // Act & Assert
             mockMvc.perform(get("/api/products",keyword,category,sort )
+                            .param("keyword", "")
+                            .param("category", "")
+                            .param("sort", "new")
                             .accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk()) // ステータスコード200 OK     
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -124,6 +130,9 @@ class ProductControllerTest {
 
             // Act & Assert
             mockMvc.perform(get("/api/products")
+                            .param("keyword", "")
+                            .param("category", "")
+                            .param("sort", "new")
                             .accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().isInternalServerError())
                     // GlobalExceptionHandler が有効ならエラーメッセージを含むJSONが返る可能性がある
