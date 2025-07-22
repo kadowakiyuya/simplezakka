@@ -277,25 +277,27 @@ class ProductServiceTest {
         verifyNoMoreInteractions(productRepository);
     }
 
-    @Test
-    @DisplayName("getFilteredAndSortedProducts(keyword): 商品エンティティにnullフィールドが含まれる場合、DTOにもnullがマッピングされる")
-    void getFilteredAndSortedProducts_WhenProductHasNullFields_ShouldMapNullToDt() {
-        // Arrange
-        List<Product> productsFromRepo = new ArrayList<>(List.of(productWithNullFields));
-        when(productRepository.findAll()).thenReturn(productsFromRepo); 
+   @Test
+@DisplayName("getFilteredAndSortedProducts(keyword): 商品エンティティにnullフィールドが含まれる場合、DTOにもnullがマッピングされる")
+void getFilteredAndSortedProducts_WithKeywordAndNullFields_ShouldMapNullToDto() {
+    // Arrange
+    String keyword = "商品";
+    List<Product> productsFromRepo = new ArrayList<>(List.of(productWithNullFields));
+    when(productRepository.findByNameContainingIgnoreCase(keyword)).thenReturn(productsFromRepo);
 
-        // Act
-        List<ProductListItem> result = productService.getFilteredAndSortedProducts(null, null, "price_asc");
+    // Act
+    List<ProductListItem> result = productService.getFilteredAndSortedProducts("商品", null, "price_asc");
 
-        // Assert
-        assertThat(result).hasSize(1);
-        ProductListItem dto = result.get(0);
-        assertThat(dto.getProductId()).isEqualTo(productWithNullFields.getProductId());
-        assertThat(dto.getName()).isEqualTo(productWithNullFields.getName());
-        assertThat(dto.getPrice()).isEqualTo(productWithNullFields.getPrice());
-        assertThat(dto.getImageUrl()).isNull(); // imageUrlがnullであることを確認
+    // Assert
+    assertThat(result).hasSize(1);
+    ProductListItem dto = result.get(0);
+    assertThat(dto.getProductId()).isEqualTo(productWithNullFields.getProductId());
+    assertThat(dto.getName()).isEqualTo(productWithNullFields.getName());
+    assertThat(dto.getPrice()).isEqualTo(productWithNullFields.getPrice());
+    assertThat(dto.getImageUrl()).isNull(); // imageUrlがnullであることを確認
 
-        // Verify
-        verify(productRepository, times(1)).findAll(); 
-    } 
+    // Verify
+    verify(productRepository, times(1)).findByNameContainingIgnoreCase(keyword);
+    verifyNoMoreInteractions(productRepository);
+}
 }
