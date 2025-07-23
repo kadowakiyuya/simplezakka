@@ -1,3 +1,0 @@
-# - 商品A（productId=1）、商品B（productId=2）
-
-GET http://localhost:8080/api/products?categoryId=1
