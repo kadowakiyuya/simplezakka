@@ -1,0 +1,16 @@
+HTTP/1.1 200 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 23 Jul 2025 08:24:03 GMT
+Connection: close
+
+{
+  "productId": 13,
+  "name": "デザイナーズチェア",
+  "price": 9000,
+  "description": "テーブルに肘をかけ足を浮かすことができる軽量チェアーで設計されておりアームチェアーのような肘がついているデザイナーズチェアー",
+  "material": "ブナ・アッシュ・メープル・チェリー・ナラ・ウォールナットなど",
+  "category": "家具",
+  "stock": 3,
+  "imageUrl": "/images/椅子.jpg"
+}
