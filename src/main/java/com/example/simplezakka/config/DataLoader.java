@@ -39,7 +39,8 @@ public class DataLoader implements CommandLineRunner {
                 3500, 
                 20, 
                 "/images/desk-organizer.png", 
-                true
+                true 
+                
 
 
             ),
