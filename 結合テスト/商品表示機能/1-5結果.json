@@ -1,0 +1,128 @@
+[
+  {
+    "productId": 18,
+    "name": "モダンデスクライト",
+    "price": 4500,
+    "createdAt": "2025-07-23T11:52:53.686201",
+    "imageUrl": "/images/テーブルランプ.jpg"
+  },
+  {
+    "productId": 17,
+    "name": "ステンレス水筒（200ml）",
+    "price": 1500,
+    "createdAt": "2025-07-23T11:52:53.683735",
+    "imageUrl": "/images/水筒.jpg"
+  },
+  {
+    "productId": 10,
+    "name": "ガラス保存容器セット",
+    "price": 4500,
+    "createdAt": "2025-07-23T11:52:53.668986",
+    "imageUrl": "/images/glass-container.png"
+  },
+  {
+    "productId": 11,
+    "name": "洗えるクッション",
+    "price": 4000,
+    "createdAt": "2025-07-23T11:52:53.668986",
+    "imageUrl": "/images/スクリーンショット 2025-07-11 181052.png"
+  },
+  {
+    "productId": 12,
+    "name": "油性ボールペン",
+    "price": 3200,
+    "createdAt": "2025-07-23T11:52:53.668986",
+    "imageUrl": "/images/スクリーンショット 2025-07-14 095635.png"
+  },
+  {
+    "productId": 13,
+    "name": "デザイナーズチェア",
+    "price": 9000,
+    "createdAt": "2025-07-23T11:52:53.668986",
+    "imageUrl": "/images/椅子.jpg"
+  },
+  {
+    "productId": 14,
+    "name": "折り畳みテーブル",
+    "price": 3600,
+    "createdAt": "2025-07-23T11:52:53.668986",
+    "imageUrl": "/images/折り畳みテーブル.jpg"
+  },
+  {
+    "productId": 15,
+    "name": "マグカップ（ブラック）",
+    "price": 1000,
+    "createdAt": "2025-07-23T11:52:53.668986",
+    "imageUrl": "/images/マグカップ.webp"
+  },
+  {
+    "productId": 16,
+    "name": "本革財布",
+    "price": 5000,
+    "createdAt": "2025-07-23T11:52:53.668986",
+    "imageUrl": "/images/財布.webp"
+  },
+  {
+    "productId": 9,
+    "name": "キャンバストートバッグ",
+    "price": 3600,
+    "createdAt": "2025-07-23T11:52:53.667013",
+    "imageUrl": "/images/tote-bag.png"
+  },
+  {
+    "productId": 8,
+    "name": "木製コースター（4枚セット）",
+    "price": 1800,
+    "createdAt": "2025-07-23T11:52:53.664336",
+    "imageUrl": "/images/wooden-coaster.png"
+  },
+  {
+    "productId": 5,
+    "name": "ミニマルウォールクロック",
+    "price": 3200,
+    "createdAt": "2025-07-23T11:52:53.656975",
+    "imageUrl": "/images/wall-clock.png"
+  },
+  {
+    "productId": 6,
+    "name": "リネンクッションカバー",
+    "price": 2500,
+    "createdAt": "2025-07-23T11:52:53.656975",
+    "imageUrl": "/images/cushion-cover.png"
+  },
+  {
+    "productId": 7,
+    "name": "陶器フラワーベース",
+    "price": 4000,
+    "createdAt": "2025-07-23T11:52:53.656975",
+    "imageUrl": "/images/flower-vase.png"
+  },
+  {
+    "productId": 2,
+    "name": "アロマディフューザー（ウッド）",
+    "price": 4200,
+    "createdAt": "2025-07-23T11:52:53.651342",
+    "imageUrl": "/images/aroma-diffuser.png"
+  },
+  {
+    "productId": 3,
+    "name": "コットンブランケット",
+    "price": 5800,
+    "createdAt": "2025-07-23T11:52:53.651342",
+    "imageUrl": "/images/cotton-blanket.png"
+  },
+  {
+    "productId": 4,
+    "name": "ステンレスタンブラー",
+    "price": 2800,
+    "createdAt": "2025-07-23T11:52:53.651342",
+    "imageUrl": "/images/tumbler.png"
+  },
+  {
+    "productId": 1,
+    "name": "シンプルデスクオーガナイザー",
+    "price": 3500,
+    "createdAt": "2025-07-23T11:52:53.635773",
+    "imageUrl": "/images/desk-organizer.png"
+  }
+]
