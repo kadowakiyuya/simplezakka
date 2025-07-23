@@ -40,6 +40,7 @@ public class CartController {
         
         return ResponseEntity.ok(cart);
     }
+
     
     @PutMapping("/items/{itemId}")
     public ResponseEntity<Cart> updateItem(
@@ -55,4 +56,11 @@ public class CartController {
         Cart cart = cartService.removeItemFromCart(itemId, session);
         return ResponseEntity.ok(cart);
     }
-}
+
+
+@DeleteMapping("/clear")
+public ResponseEntity<Void> clearCart(HttpSession session) {
+    cartService.clearCart(session);
+    return ResponseEntity.noContent().build();
+    }
+    }
