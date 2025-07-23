@@ -1,9 +1,3 @@
-HTTP/1.1 200 
-Content-Type: application/json
-Transfer-Encoding: chunked
-Date: Wed, 23 Jul 2025 05:38:53 GMT
-Connection: close
-
 [
   {
     "productId": 18,
