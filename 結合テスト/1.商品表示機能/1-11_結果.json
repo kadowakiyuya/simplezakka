@@ -1,0 +1,16 @@
+HTTP/1.1 200 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Thu, 24 Jul 2025 04:42:55 GMT
+Connection: close
+
+{
+  "productId": 19,
+  "name": "1-11のテスト用",
+  "price": 3,
+  "description": "これはテスト用の商品です。",
+  "material": "木材",
+  "category": "文房具",
+  "stock": 2,
+  "imageUrl": null
+}
