@@ -1,0 +1,5 @@
+HTTP/1.1 400 
+Set-Cookie: JSESSIONID=692D9AA70886025E7EF8A8CD6AC96BCA; Path=/; HttpOnly
+Content-Length: 0
+Date: Thu, 24 Jul 2025 03:14:14 GMT
+Connection: close
