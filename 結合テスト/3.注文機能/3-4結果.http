@@ -1,0 +1,14 @@
+### No. 3-4
+# カートが空の状態で注文しようとしたとき、400エラーが返る
+
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+
+{
+      "customerInfo": {
+        "name": "顧客 一郎",
+        "email": "ichiro@test.com",
+        "address": "東京都千代田区テスト1-1",
+        "phoneNumber": "03-1234-5678"
+      }
+    }
