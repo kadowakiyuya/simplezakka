@@ -1,7 +1,8 @@
 HTTP/1.1 200 
+Set-Cookie: JSESSIONID=F76E5658D69610D8869FE7279E7F9646; Path=/; HttpOnly
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Wed, 23 Jul 2025 09:37:36 GMT
+Date: Fri, 25 Jul 2025 09:24:26 GMT
 Connection: close
 
 {
@@ -12,19 +13,10 @@ Connection: close
       "name": "シンプルデスクオーガナイザー",
       "price": 3500,
       "imageUrl": "/images/desk-organizer.png",
-      "quantity": 7,
-      "subtotal": 24500
-    },
-    "2": {
-      "id": "2",
-      "productId": 2,
-      "name": "アロマディフューザー（ウッド）",
-      "price": 4200,
-      "imageUrl": "/images/aroma-diffuser.png",
-      "quantity": 1,
-      "subtotal": 4200
+      "quantity": 2,
+      "subtotal": 7000
     }
   },
-  "totalQuantity": 8,
-  "totalPrice": 28700
+  "totalQuantity": 2,
+  "totalPrice": 7000
 }
