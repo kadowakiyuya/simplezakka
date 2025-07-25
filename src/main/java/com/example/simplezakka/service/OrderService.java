@@ -93,6 +93,23 @@ public class OrderService {
             }
         }
 
+
+        //  結合テスト用　エラー発生させるコード  
+    //　不正な顧客情報      
+    //order.setCustomerName(null);
+
+        //  結合テスト用　エラー発生させるコード
+            //  在庫数が注文数以下
+            //productRepository.setStockQuantity(-100);
+
+
+
+            //  結合テスト用　エラー発生させるコード
+            // カートクリア時にエラーを発生させる
+        //cartService.clearCart(null);
+
+
+
         // 注文保存
         Order savedOrder = orderRepository.save(order);
 

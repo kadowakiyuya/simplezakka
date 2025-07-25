@@ -1,0 +1,23 @@
+# カートに追加（ID = 999）
+POST http://localhost:8080/api/cart
+Content-Type: application/json
+
+{
+  "productId": 999,
+  "quantity": 1
+}
+
+###
+
+# 注文送信
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+
+{
+      "customerInfo": {
+        "name": "顧客 一郎",
+        "email": "ichiro@test.com",
+        "address": "東京都千代田区テスト1-1",
+        "phoneNumber": "03-1234-5678"
+      }
+ }

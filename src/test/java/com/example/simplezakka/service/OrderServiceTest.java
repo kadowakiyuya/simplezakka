@@ -30,6 +30,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
@@ -387,4 +389,29 @@ class OrderServiceTest {
         // 例外が適切に伝播することを確認する。
     }
 
+
+
+ //----結合テストの3-10異常系 - (模擬) 注文DB保存時にエラー発生のテスト----
+
+ @Test
+ @DisplayName("OrderRepository.save で例外が発生した場合、RuntimeExceptionがスローされる")
+ void testPlaceOrder_whenSaveThrowsException_shouldThrowException(){
+      // Arrange
+      when(orderRepository.save(any())).thenThrow(new RuntimeException("DB save error"));
+     // Act&Assert
+     RuntimeException ex = assertThrows(RuntimeException.class, () ->
+                orderService.placeOrder(cart, orderRequest, session)
+        );
+
+        assertEquals("DB save error", ex.getMessage());
+        verify(cartService, never()).clearCart(any());
+        verify(orderDetailRepository, never()).save(any());
+        verify(orderRepository, never()).save(any());
+        verify(productRepository, never()).save(any());
+        verify(session, never()).removeAttribute("cart");
+
+        //CartService.clearCartは呼び出されない
+        //それぞれのRepositoryが呼び出されない
+        //注文処理中にエラーが起きてもカートの中身が消去されない
+ }
 }
