@@ -1,0 +1,14 @@
+HTTP/1.1 200 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 25 Jul 2025 07:21:10 GMT
+Connection: close
+
+[
+  "インテリア",
+  "キッチン用品",
+  "ファッション小物",
+  "家具",
+  "文房具",
+  "日用品"
+]
