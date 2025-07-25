@@ -93,6 +93,11 @@ public class OrderService {
             }
         }
 
+
+        //  結合テスト用　エラー発生させるコード  
+    //　不正な顧客情報      
+    //order.setCustomerName(null);
+
         // 注文保存
         Order savedOrder = orderRepository.save(order);
 

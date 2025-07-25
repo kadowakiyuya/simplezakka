@@ -405,5 +405,13 @@ class OrderServiceTest {
 
         assertEquals("DB save error", ex.getMessage());
         verify(cartService, never()).clearCart(any());
+        verify(orderDetailRepository, never()).save(any());
+        verify(orderRepository, never()).save(any());
+        verify(productRepository, never()).save(any());
+        verify(session, never()).removeAttribute("cart");
+
+        //CartService.clearCartは呼び出されない
+        //それぞれのRepositoryが呼び出されない
+        //注文処理中にエラーが起きてもカートの中身が消去されない
  }
 }
