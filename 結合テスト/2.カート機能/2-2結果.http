@@ -1,0 +1,17 @@
+DELETE http://localhost:8080/api/cart/clear　
+
+
+###
+
+POST http://localhost:8080/api/cart
+Content-Type: application/json
+
+{"productId": 1, "quantity": 2}
+
+###
+
+
+POST http://localhost:8080/api/cart
+Content-Type: application/json
+
+{"productId": 1, "quantity": 3}
