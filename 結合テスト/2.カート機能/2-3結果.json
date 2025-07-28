@@ -1,7 +1,7 @@
 HTTP/1.1 200 
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Wed, 23 Jul 2025 09:38:43 GMT
+Date: Mon, 28 Jul 2025 01:57:39 GMT
 Connection: close
 
 {
@@ -12,8 +12,8 @@ Connection: close
       "name": "シンプルデスクオーガナイザー",
       "price": 3500,
       "imageUrl": "/images/desk-organizer.png",
-      "quantity": 10,
-      "subtotal": 35000
+      "quantity": 4,
+      "subtotal": 14000
     },
     "2": {
       "id": "2",
@@ -21,10 +21,19 @@ Connection: close
       "name": "アロマディフューザー（ウッド）",
       "price": 4200,
       "imageUrl": "/images/aroma-diffuser.png",
-      "quantity": 9,
-      "subtotal": 37800
+      "quantity": 1,
+      "subtotal": 4200
+    },
+    "3": {
+      "id": "3",
+      "productId": 3,
+      "name": "コットンブランケット",
+      "price": 5800,
+      "imageUrl": "/images/cotton-blanket.png",
+      "quantity": 3,
+      "subtotal": 17400
     }
   },
-  "totalQuantity": 19,
-  "totalPrice": 72800
+  "totalQuantity": 8,
+  "totalPrice": 35600
 }

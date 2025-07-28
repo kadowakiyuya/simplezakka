@@ -1,7 +1,7 @@
 HTTP/1.1 200 
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Wed, 23 Jul 2025 10:27:00 GMT
+Date: Mon, 28 Jul 2025 02:12:07 GMT
 Connection: close
 
 {
@@ -12,10 +12,10 @@ Connection: close
       "name": "アロマディフューザー（ウッド）",
       "price": 4200,
       "imageUrl": "/images/aroma-diffuser.png",
-      "quantity": 9,
-      "subtotal": 37800
+      "quantity": 1,
+      "subtotal": 4200
     }
   },
-  "totalQuantity": 9,
-  "totalPrice": 37800
+  "totalQuantity": 1,
+  "totalPrice": 4200
 }
