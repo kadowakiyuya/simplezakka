@@ -1,21 +1,30 @@
 HTTP/1.1 200 
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Wed, 23 Jul 2025 10:39:22 GMT
+Date: Mon, 28 Jul 2025 05:47:16 GMT
 Connection: close
 
 {
   "items": {
+    "1": {
+      "id": "1",
+      "productId": 1,
+      "name": "シンプルデスクオーガナイザー",
+      "price": 3500,
+      "imageUrl": "/images/desk-organizer.png",
+      "quantity": 4,
+      "subtotal": 14000
+    },
     "2": {
       "id": "2",
       "productId": 2,
       "name": "アロマディフューザー（ウッド）",
       "price": 4200,
       "imageUrl": "/images/aroma-diffuser.png",
-      "quantity": 9,
-      "subtotal": 37800
+      "quantity": 1,
+      "subtotal": 4200
     }
   },
-  "totalQuantity": 9,
-  "totalPrice": 37800
+  "totalQuantity": 5,
+  "totalPrice": 18200
 }
