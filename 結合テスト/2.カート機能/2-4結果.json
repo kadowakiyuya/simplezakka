@@ -1,7 +1,7 @@
 HTTP/1.1 200 
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Wed, 23 Jul 2025 10:22:33 GMT
+Date: Mon, 28 Jul 2025 02:03:42 GMT
 Connection: close
 
 {
@@ -14,17 +14,8 @@ Connection: close
       "imageUrl": "/images/desk-organizer.png",
       "quantity": 5,
       "subtotal": 17500
-    },
-    "2": {
-      "id": "2",
-      "productId": 2,
-      "name": "アロマディフューザー（ウッド）",
-      "price": 4200,
-      "imageUrl": "/images/aroma-diffuser.png",
-      "quantity": 9,
-      "subtotal": 37800
     }
   },
-  "totalQuantity": 14,
-  "totalPrice": 55300
+  "totalQuantity": 5,
+  "totalPrice": 17500
 }
